@@ -4,6 +4,9 @@ import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -26,7 +29,16 @@ internal fun ComponentStyle?.toButtonColors(): ButtonColors =
         ButtonDefaults.buttonColors(containerColor = it)
     } ?: ButtonDefaults.buttonColors()
 
+@Composable
+internal fun ComponentStyle?.toIconButtonColors(): IconButtonColors =
+    IconButtonDefaults.iconButtonColors(
+        containerColor = this.toBackgroundColor() ?: Color.Unspecified,
+        contentColor = this.toForegroundColor() ?: LocalContentColor.current,
+    )
+
 internal fun ComponentStyle?.toBackgroundColor(): Color? = this?.backgroundColor.toColor()
+
+internal fun ComponentStyle?.toForegroundColor(): Color? = this?.foregroundColor.toColor()
 
 @Composable
 internal fun ComponentStyle?.toShape(defSharp: Shape): Shape =

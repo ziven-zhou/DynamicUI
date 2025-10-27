@@ -54,6 +54,8 @@ data class ComponentLayout(
 
 @Serializable
 data class ComponentStyle(
+    @SerialName("foregroundColor")
+    val foregroundColor: String? = null,
     @SerialName("backgroundColor")
     val backgroundColor: String? = null,
     @SerialName("topLeft")

@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.dynamic
+package com.example.dynamic.ui.demo
 
 val uiList = listOf(SCAFFOLD_JSON, ROOT_JSON, ITEM_JSON)
 
@@ -15,7 +15,7 @@ const val SCAFFOLD_JSON = """
             {
                 "componentName": "TopBar",
                 "layout": {
-                    "height": 68,
+                    "height": -2,
                     "width": -1
                 },
                 "value": {
@@ -26,42 +26,77 @@ const val SCAFFOLD_JSON = """
                     "fontColor": "#000000"
                 }
             },
-{
-    "componentName": "BottomBar",
-    "layout": {
-    "height": 68,
-    "width": -1
-}
-},
-{
-    "componentName": "SnackBar",
-    "layout": {
-    "height": 68,
-    "width": -1
-}
-},
-{
-    "componentName": "FloatingActionButton",
-    "layout": {
-        "height": 68,
-        "width": 68
-    },
-    "style": {
-        "backgroundColor": "#228811"
-    },
-        "children": [
             {
-                "componentName": "Text",
-                "style": {
-                    "fontSize": 48,
-                    "fontColor": "#FF8811"
+                "componentName": "BottomBar",
+                    "layout": {
+                    "height": -2,
+                    "width": -2
                 },
-        "value": {
-            "text": "+"
-        }
-            }
-        ]
-},
+                "children": [
+                    {
+                        "componentName": "IconButton",
+                        "layout": {
+                            "height": -2,
+                            "width": -2
+                        },
+                        "value": {
+                            "image": "Menu"
+                        }
+                    },
+                    {
+                        "componentName": "IconButton",
+                        "layout": {
+                            "height": -2,
+                            "width": -2
+                        },
+                        "value": {
+                            "image": "Add"
+                        }
+                    },
+                    {
+                        "componentName": "IconButton",
+                        "layout": {
+                            "height": -2,
+                            "width": -2
+                        },
+                        "value": {
+                            "image": "Close"
+                        }
+                    }
+                ]
+            },
+            {
+                "componentName": "SnackBar",
+                    "layout": {
+                    "height": 68,
+                    "width": -1
+                }
+            },
+            {
+                "componentName": "FloatingActionButton",
+                "layout": {
+                    "height": -2,
+                    "width": -2
+                },
+                "style": {
+                    "backgroundColor": "#006633"
+                },
+                "children": [
+                    {
+                        "componentName": "IconButton",
+                        "layout": {
+                            "height": -2,
+                            "width": -2
+                        },
+                        "style": {
+                            "foregroundColor": "#FFFFFF"
+                        },
+                        "value": {
+                            "text": "Menu"
+                        }
+                    }
+                ]
+            },
             {
                "componentName": "Other",
                "componentType": "LazyColumn",

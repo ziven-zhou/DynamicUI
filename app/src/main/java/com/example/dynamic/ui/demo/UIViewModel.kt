@@ -3,7 +3,6 @@ package com.example.dynamic.ui.demo
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.ui.dynamic.uiList
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
 import com.ziven.dynamic.ui.runSafe

@@ -1,6 +1,7 @@
 package com.ziven.dynamic.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,12 +16,17 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import coil.compose.rememberAsyncImagePainter
 import com.ziven.dynamic.ui.internal.componentClick
@@ -35,7 +41,10 @@ import com.ziven.dynamic.ui.internal.toFontFamily
 import com.ziven.dynamic.ui.internal.toFontSize
 import com.ziven.dynamic.ui.internal.toFontStyle
 import com.ziven.dynamic.ui.internal.toFontWeight
+import com.ziven.dynamic.ui.internal.toForegroundColor
 import com.ziven.dynamic.ui.internal.toHorizontalAlign
+import com.ziven.dynamic.ui.internal.toIcon
+import com.ziven.dynamic.ui.internal.toIconButtonColors
 import com.ziven.dynamic.ui.internal.toImage
 import com.ziven.dynamic.ui.internal.toMaxLines
 import com.ziven.dynamic.ui.internal.toMinLines
@@ -83,6 +92,7 @@ internal fun DispatchRenderComponent(
         "Text" -> TextComponent(uiComponent, modifier, onClick)
         "Image" -> ImageComponent(uiComponent, modifier, onClick)
         "Button" -> ButtonComponent(uiComponent, modifier, onClick)
+        "IconButton" -> IconButtonComponent(uiComponent, modifier, onClick)
         else ->
             UIManager.getComponent(uiComponent.componentType)?.let {
                 DispatchRenderComponent(it, modifier, onClick, componentList)
@@ -124,7 +134,12 @@ internal fun ScaffoldComponent(
             uiComponent.style.toBackgroundColor()
                 ?: MaterialTheme.colorScheme.background,
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+        ) {
             uiComponent.ForEachComponent { child ->
                 when (child.componentName) {
                     "TopBar" -> return@ForEachComponent
@@ -151,9 +166,9 @@ internal fun TopBarComponent(
             Text(uiComponent.value.toText())
         },
         navigationIcon = {
-//            uiComponent.findComponentWithId("NavigationIcon")?.let {
-//                DispatchRenderComponent(it, Modifier, onClick)
-//            }
+            uiComponent.ForEachComponent { child ->
+                DispatchRenderComponent(child, Modifier, onClick)
+            }
         },
     )
 }
@@ -165,8 +180,25 @@ internal fun BottomBarComponent(
     onClick: (ComponentAction) -> Unit,
 ) {
     BottomAppBar(
-        modifier = modifier.componentUI(uiComponent),
-    ) { }
+        modifier = uiComponent.layout?.let { modifier.componentLayout(it) } ?: modifier,
+        containerColor =
+            uiComponent.style.toBackgroundColor()
+                ?: FloatingActionButtonDefaults.containerColor,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            uiComponent.ForEachComponent {
+                DispatchRenderComponent(
+                    it,
+                    Modifier.align(Alignment.CenterVertically),
+                    onClick,
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -177,7 +209,9 @@ internal fun SnackBarComponent(
 ) {
     Snackbar(
         modifier = modifier.componentUI(uiComponent),
-    ) { }
+    ) {
+        uiComponent.ForEachComponent { DispatchRenderComponent(it, Modifier, onClick) }
+    }
 }
 
 @Composable
@@ -186,6 +220,9 @@ internal fun FloatingActionButtonComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
 ) {
+    val containerColor =
+        uiComponent.style.toBackgroundColor() ?: FloatingActionButtonDefaults.containerColor
+    val contentColor = uiComponent.style.toForegroundColor() ?: contentColorFor(containerColor)
     FloatingActionButton(
         onClick = {
             onClick(
@@ -197,7 +234,8 @@ internal fun FloatingActionButtonComponent(
         },
         modifier = uiComponent.layout?.let { modifier.componentLayout(it) } ?: modifier,
         shape = uiComponent.style.toShape(FloatingActionButtonDefaults.shape),
-        containerColor = uiComponent.style.toBackgroundColor() ?: FloatingActionButtonDefaults.containerColor,
+        containerColor = containerColor,
+        contentColor = contentColor,
     ) {
         uiComponent.ForEachComponent { DispatchRenderComponent(it, Modifier, onClick) }
     }
@@ -431,5 +469,46 @@ internal fun ButtonComponent(
             maxLines = uiComponent.style.toMaxLines(),
             minLines = uiComponent.style.toMinLines(),
         )
+    }
+}
+
+@Composable
+internal fun IconButtonComponent(
+    uiComponent: UIComponent,
+    modifier: Modifier = Modifier,
+    onClick: (ComponentAction) -> Unit,
+) {
+    IconButton(
+        modifier =
+            modifier
+                .componentUI(uiComponent),
+        onClick = {
+            onClick(
+                ComponentAction(
+                    uiComponent.componentId,
+                    uiComponent.value,
+                ),
+            )
+        },
+        colors = uiComponent.style.toIconButtonColors(),
+        shape = uiComponent.style.toShape(IconButtonDefaults.standardShape),
+    ) {
+        val icon = uiComponent.value.toIcon()
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = uiComponent.value.toText(),
+            )
+        } else {
+            Icon(
+                painter =
+                    rememberAsyncImagePainter(
+                        model = uiComponent.value.toImage(),
+                        filterQuality = uiComponent.style.toQuality(),
+                        contentScale = uiComponent.style.toScale(),
+                    ),
+                contentDescription = uiComponent.value.toText(),
+            )
+        }
     }
 }
