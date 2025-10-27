@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DynamicUI"
 include(":app")
- 
+include(":dynamicui")
