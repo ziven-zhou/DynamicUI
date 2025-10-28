@@ -15,16 +15,14 @@ import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentLayout
 import com.ziven.dynamic.ui.ComponentStyle
 import com.ziven.dynamic.ui.UIComponent
+import com.ziven.dynamic.ui.component.click
+import com.ziven.dynamic.ui.toColor
 
 internal fun Modifier.componentUI(uiComponent: UIComponent): Modifier =
-    this
-        .let { modifier ->
-            uiComponent.layout?.let { modifier.componentLayout(it) } ?: modifier
-        }.let { modifier ->
-            uiComponent.style?.let { modifier.componentStyle(it) } ?: modifier
-        }
+    this.componentLayout(uiComponent.layout).componentStyle(uiComponent.style)
 
-internal fun Modifier.componentLayout(layout: ComponentLayout): Modifier = componentSize(layout).componentPadding(layout)
+internal fun Modifier.componentLayout(layout: ComponentLayout?): Modifier =
+    if (layout == null) this else componentSize(layout).componentPadding(layout)
 
 internal fun Modifier.componentSize(layout: ComponentLayout): Modifier =
     this
@@ -62,7 +60,8 @@ internal fun Modifier.componentPadding(layout: ComponentLayout): Modifier =
         )
     } ?: this
 
-internal fun Modifier.componentStyle(style: ComponentStyle): Modifier = componentSharp(style).componentBackgroundColor(style)
+internal fun Modifier.componentStyle(style: ComponentStyle?): Modifier =
+    if (style == null) this else componentSharp(style).componentBackgroundColor(style)
 
 internal fun Modifier.componentSharp(style: ComponentStyle): Modifier =
     style.toCornerValue()?.let {
@@ -78,21 +77,14 @@ internal fun Modifier.componentSharp(style: ComponentStyle): Modifier =
     } ?: this
 
 internal fun Modifier.componentBackgroundColor(style: ComponentStyle): Modifier =
-    style.toBackgroundColor()?.let { this.background(color = it) } ?: this
+    style.backgroundColor.toColor()?.let { this.background(color = it) } ?: this
 
 internal fun Modifier.componentClick(
     uiComponent: UIComponent,
     onClick: (ComponentAction) -> Unit,
 ): Modifier =
     if (uiComponent.value.toClickable()) {
-        this.clickable {
-            onClick(
-                ComponentAction(
-                    uiComponent.componentId,
-                    uiComponent.value,
-                ),
-            )
-        }
+        this.clickable { click(uiComponent, onClick) }
     } else {
         this
     }

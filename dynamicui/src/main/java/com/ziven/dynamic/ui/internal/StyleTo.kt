@@ -25,20 +25,20 @@ import com.ziven.dynamic.ui.toSp
 
 @Composable
 internal fun ComponentStyle?.toButtonColors(): ButtonColors =
-    this.toBackgroundColor()?.let {
+    this?.backgroundColor.toColor()?.let {
         ButtonDefaults.buttonColors(containerColor = it)
     } ?: ButtonDefaults.buttonColors()
 
 @Composable
 internal fun ComponentStyle?.toIconButtonColors(): IconButtonColors =
     IconButtonDefaults.iconButtonColors(
-        containerColor = this.toBackgroundColor() ?: Color.Unspecified,
-        contentColor = this.toForegroundColor() ?: LocalContentColor.current,
+        containerColor = this.toBackgroundColor(Color.Unspecified),
+        contentColor = this.toForegroundColor(LocalContentColor.current),
     )
 
-internal fun ComponentStyle?.toBackgroundColor(): Color? = this?.backgroundColor.toColor()
+internal fun ComponentStyle?.toBackgroundColor(defColor: Color): Color = this?.backgroundColor.toColor() ?: defColor
 
-internal fun ComponentStyle?.toForegroundColor(): Color? = this?.foregroundColor.toColor()
+internal fun ComponentStyle?.toForegroundColor(defColor: Color): Color = this?.foregroundColor.toColor() ?: defColor
 
 @Composable
 internal fun ComponentStyle?.toShape(defSharp: Shape): Shape =
