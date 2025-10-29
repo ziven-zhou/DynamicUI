@@ -38,7 +38,11 @@ internal fun ComponentStyle?.toIconButtonColors(): IconButtonColors =
 
 internal fun ComponentStyle?.toBackgroundColor(defColor: Color): Color = this?.backgroundColor.toColor() ?: defColor
 
+internal fun ComponentStyle?.toContainerColor(defColor: Color): Color = this.toBackgroundColor(defColor)
+
 internal fun ComponentStyle?.toForegroundColor(defColor: Color): Color = this?.foregroundColor.toColor() ?: defColor
+
+internal fun ComponentStyle?.toContentColor(defColor: Color): Color = this.toForegroundColor(this.toContainerColor(defColor))
 
 @Composable
 internal fun ComponentStyle?.toShape(defSharp: Shape): Shape =

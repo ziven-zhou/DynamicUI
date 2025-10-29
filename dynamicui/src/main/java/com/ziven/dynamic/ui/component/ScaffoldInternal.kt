@@ -14,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,14 +24,14 @@ import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.findChildComponentWithName
 import com.ziven.dynamic.ui.internal.componentLayout
 import com.ziven.dynamic.ui.internal.componentUI
-import com.ziven.dynamic.ui.internal.toBackgroundColor
+import com.ziven.dynamic.ui.internal.toContainerColor
+import com.ziven.dynamic.ui.internal.toContentColor
 import com.ziven.dynamic.ui.internal.toFabPosition
 import com.ziven.dynamic.ui.internal.toFontColor
 import com.ziven.dynamic.ui.internal.toFontFamily
 import com.ziven.dynamic.ui.internal.toFontSize
 import com.ziven.dynamic.ui.internal.toFontStyle
 import com.ziven.dynamic.ui.internal.toFontWeight
-import com.ziven.dynamic.ui.internal.toForegroundColor
 import com.ziven.dynamic.ui.internal.toMaxLines
 import com.ziven.dynamic.ui.internal.toMinLines
 import com.ziven.dynamic.ui.internal.toOverflow
@@ -69,8 +68,8 @@ internal fun ScaffoldComponent(
             }
         },
         floatingActionButtonPosition = uiComponent.run { style.toFabPosition() },
-        containerColor = uiComponent.style.toBackgroundColor(MaterialTheme.colorScheme.background),
-        contentColor = uiComponent.style.toForegroundColor(contentColorFor(contentColorFor)),
+        containerColor = uiComponent.style.toContainerColor(MaterialTheme.colorScheme.background),
+        contentColor = uiComponent.style.toContentColor(MaterialTheme.colorScheme.background),
     ) { padding ->
         Box(
             modifier =
@@ -129,7 +128,8 @@ internal fun BottomBarComponent(
 ) {
     BottomAppBar(
         modifier = modifier.componentLayout(uiComponent.layout),
-        containerColor = uiComponent.style.toBackgroundColor(FloatingActionButtonDefaults.containerColor),
+        containerColor = uiComponent.style.toContainerColor(FloatingActionButtonDefaults.containerColor),
+        contentColor = uiComponent.style.toContentColor(FloatingActionButtonDefaults.containerColor),
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -162,8 +162,8 @@ internal fun FloatingActionButtonComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
 ) {
-    val containerColor = uiComponent.style.toBackgroundColor(FloatingActionButtonDefaults.containerColor)
-    val contentColor = uiComponent.style.toForegroundColor(contentColorFor(containerColor))
+    val containerColor = uiComponent.style.toContainerColor(FloatingActionButtonDefaults.containerColor)
+    val contentColor = uiComponent.style.toContentColor(FloatingActionButtonDefaults.containerColor)
     FloatingActionButton(
         onClick = click(uiComponent, onClick),
         modifier = modifier.componentLayout(uiComponent.layout),
