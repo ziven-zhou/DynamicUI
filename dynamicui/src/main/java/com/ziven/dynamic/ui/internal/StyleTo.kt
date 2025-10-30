@@ -7,6 +7,7 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -38,11 +39,14 @@ internal fun ComponentStyle?.toIconButtonColors(): IconButtonColors =
 
 internal fun ComponentStyle?.toBackgroundColor(defColor: Color): Color = this?.backgroundColor.toColor() ?: defColor
 
+@Composable
 internal fun ComponentStyle?.toContainerColor(defColor: Color): Color = this.toBackgroundColor(defColor)
 
 internal fun ComponentStyle?.toForegroundColor(defColor: Color): Color = this?.foregroundColor.toColor() ?: defColor
 
-internal fun ComponentStyle?.toContentColor(defColor: Color): Color = this.toForegroundColor(this.toContainerColor(defColor))
+@Composable
+internal fun ComponentStyle?.toContentColor(defColor: Color): Color =
+    this.toForegroundColor(contentColorFor(this.toContainerColor(defColor)))
 
 @Composable
 internal fun ComponentStyle?.toShape(defSharp: Shape): Shape =

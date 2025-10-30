@@ -92,7 +92,7 @@ const val SCAFFOLD_JSON = """
                             "foregroundColor": "#FFFFFF"
                         },
                         "value": {
-                            "text": "Menu"
+                            "image": "Menu"
                         }
                     }
                 ]

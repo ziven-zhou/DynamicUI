@@ -8,13 +8,16 @@ import com.ziven.dynamic.ui.component.DispatchRenderComponent
 fun RenderComponent(
     componentType: String?,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
     onClick: (ComponentAction) -> Unit,
-) = UIManager.getComponent(componentType)?.let { RenderComponent(it, componentList, onClick) }
+) = UIManager
+    .getComponent(componentType)
+    ?.let { RenderComponent(it, componentList, componentState, onClick) }
 
 @Composable
 fun RenderComponent(
     uiComponent: UIComponent,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
     onClick: (ComponentAction) -> Unit,
-) = DispatchRenderComponent(uiComponent, Modifier, onClick, componentList)
-
+) = DispatchRenderComponent(uiComponent, Modifier, onClick, componentList, componentState)

@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentList
+import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.internal.componentClick
@@ -21,6 +22,7 @@ internal fun ColumnComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Column(
         modifier =
@@ -34,6 +36,7 @@ internal fun ColumnComponent(
                 Modifier.align(child.style.toHorizontalAlign()),
                 onClick,
                 componentList,
+                componentState,
             )
         }
     }
@@ -45,6 +48,7 @@ internal fun RowComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Row(
         modifier =
@@ -58,6 +62,7 @@ internal fun RowComponent(
                 Modifier.align(child.style.toVerticalAlign()),
                 onClick,
                 componentList,
+                componentState,
             )
         }
     }
@@ -69,6 +74,7 @@ internal fun BoxComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Box(
         modifier =
@@ -82,6 +88,7 @@ internal fun BoxComponent(
                 Modifier.align(child.style.toAlign()),
                 onClick,
                 componentList,
+                componentState,
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.ziven.dynamic.ui
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableIntState
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -101,4 +102,8 @@ class ComponentList(
     val componentKey: ((index: Int) -> Any)? = null,
     val componentType: (index: Int) -> String?,
     val componentData: (index: Int, componentId: String) -> ComponentValue?,
+)
+
+class ComponentState(
+    val snackBarHostState: SnackbarHostState? = null,
 )

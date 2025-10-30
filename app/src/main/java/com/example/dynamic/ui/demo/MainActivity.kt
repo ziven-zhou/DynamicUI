@@ -8,16 +8,21 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dynamic.ui.demo.ui.theme.DynamicUITheme
 import com.ziven.dynamic.ui.ComponentList
+import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ComponentValue
 import com.ziven.dynamic.ui.RenderComponent
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +53,7 @@ fun DynamicUIView() {
         uiViewModel.updateUI()
         viewModel.updateUi()
     }
+    val snackBarHostState = remember { SnackbarHostState() }
     RenderComponent(
         componentType = "Scaffold",
         componentList =
@@ -64,8 +70,13 @@ fun DynamicUIView() {
                 Log.d("DynamicUIView", "DynamicUIView: $item $value")
                 value
             },
+        componentState = ComponentState(snackBarHostState),
     ) {
         Log.d("DynamicUIView", "RenderComponent: $it")
+        viewModel.viewModelScope.launch {
+            Log.d("DynamicUIView", "Click: $it")
+            snackBarHostState.showSnackbar("SnackBarTest")
+        }
     }
 }
 

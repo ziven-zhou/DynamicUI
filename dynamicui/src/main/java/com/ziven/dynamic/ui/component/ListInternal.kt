@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentList
+import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
 import com.ziven.dynamic.ui.forEachComponent
@@ -19,6 +20,7 @@ internal fun LazyColumnComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     LazyColumn(
         modifier =
@@ -27,13 +29,12 @@ internal fun LazyColumnComponent(
                 .componentClick(uiComponent, onClick),
     ) {
         componentList?.let {
-            val size = it.componentSize()
             items(
-                count = size.intValue,
+                count = it.componentSize().intValue,
                 key = it.componentKey,
                 contentType = { index -> it.componentType(index) },
             ) { index ->
-                ItemsComponent(index, it, onClick)
+                ItemsComponent(index, onClick, componentList, componentState)
             }
         }
     }
@@ -45,6 +46,7 @@ internal fun LazyRowComponent(
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     LazyRow(
         modifier =
@@ -53,13 +55,12 @@ internal fun LazyRowComponent(
                 .componentClick(uiComponent, onClick),
     ) {
         componentList?.let {
-            val size = it.componentSize()
             items(
-                count = size.intValue,
+                count = it.componentSize().intValue,
                 key = it.componentKey,
                 contentType = { index -> it.componentType(index) },
             ) { index ->
-                ItemsComponent(index, it, onClick)
+                ItemsComponent(index, onClick, componentList, componentState)
             }
         }
     }
@@ -68,8 +69,9 @@ internal fun LazyRowComponent(
 @Composable
 private fun ItemsComponent(
     index: Int,
-    componentList: ComponentList,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList,
+    componentState: ComponentState? = null,
 ) {
     val type = componentList.componentType(index) ?: return
     val parent = UIManager.getComponent(type) ?: return
@@ -80,5 +82,5 @@ private fun ItemsComponent(
             }
         }
     }
-    DispatchRenderComponent(parent, Modifier, onClick, componentList)
+    DispatchRenderComponent(parent, Modifier, onClick, componentList, componentState)
 }
