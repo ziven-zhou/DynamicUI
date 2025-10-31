@@ -13,6 +13,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentLayout
+import com.ziven.dynamic.ui.ComponentList
+import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ComponentStyle
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.component.click
@@ -82,9 +84,11 @@ internal fun Modifier.componentBackgroundColor(style: ComponentStyle): Modifier 
 internal fun Modifier.componentClick(
     uiComponent: UIComponent,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ): Modifier =
     if (uiComponent.value.toClickable()) {
-        this.clickable { click(uiComponent, onClick) }
+        this.clickable { click(uiComponent, onClick, componentList, componentState)() }
     } else {
         this
     }

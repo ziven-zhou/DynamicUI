@@ -13,7 +13,7 @@ internal fun ComponentValue?.toText() = this?.text ?: ""
 
 internal fun ComponentValue?.toImage() = this?.image
 
-internal fun ComponentValue?.toClickable() = this?.clickable ?: false
+internal fun ComponentValue?.toClickable() = this?.clickable ?: this?.click?.isNotEmpty() ?: false
 
 internal fun ComponentValue?.toIcon(): ImageVector? =
     when (this?.image) {

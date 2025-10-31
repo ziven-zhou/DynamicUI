@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import coil.compose.rememberAsyncImagePainter
 import com.ziven.dynamic.ui.ComponentAction
+import com.ziven.dynamic.ui.ComponentList
+import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.internal.componentClick
 import com.ziven.dynamic.ui.internal.componentUI
@@ -37,6 +39,8 @@ import com.ziven.dynamic.ui.internal.toText
 internal fun SpacerComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Spacer(modifier = modifier.componentUI(uiComponent))
 }
@@ -46,12 +50,14 @@ internal fun TextComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Text(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
         text = uiComponent.value.toText(),
         fontSize = uiComponent.style.toFontSize(),
         color = uiComponent.style.toFontColor(),
@@ -69,12 +75,14 @@ internal fun ImageComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Image(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
         painter =
             rememberAsyncImagePainter(
                 model = uiComponent.value.toImage(),
@@ -92,12 +100,14 @@ internal fun ButtonComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     Button(
         modifier =
             modifier
                 .componentUI(uiComponent),
-        onClick = click(uiComponent, onClick),
+        onClick = click(uiComponent, onClick, componentList, componentState),
         shape = uiComponent.style.toShape(ButtonDefaults.shape),
         colors = uiComponent.style.toButtonColors(),
     ) {
@@ -120,10 +130,12 @@ internal fun IconButtonComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
     onClick: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
 ) {
     IconButton(
         modifier = modifier.componentUI(uiComponent),
-        onClick = click(uiComponent, onClick),
+        onClick = click(uiComponent, onClick, componentList, componentState),
         colors = uiComponent.style.toIconButtonColors(),
         shape = uiComponent.style.toShape(IconButtonDefaults.standardShape),
     ) {

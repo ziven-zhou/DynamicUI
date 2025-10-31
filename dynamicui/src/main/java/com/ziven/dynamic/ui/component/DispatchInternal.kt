@@ -119,27 +119,27 @@ private fun dispatchElementComponent(
     componentState: ComponentState? = null,
 ) = when (uiComponent.componentName) {
     "Spacer" -> {
-        SpacerComponent(uiComponent, modifier)
+        SpacerComponent(uiComponent, modifier, componentList, componentState)
         true
     }
 
     "Text" -> {
-        TextComponent(uiComponent, modifier, onClick)
+        TextComponent(uiComponent, modifier, onClick, componentList, componentState)
         true
     }
 
     "Image" -> {
-        ImageComponent(uiComponent, modifier, onClick)
+        ImageComponent(uiComponent, modifier, onClick, componentList, componentState)
         true
     }
 
     "Button" -> {
-        ButtonComponent(uiComponent, modifier, onClick)
+        ButtonComponent(uiComponent, modifier, onClick, componentList, componentState)
         true
     }
 
     "IconButton" -> {
-        IconButtonComponent(uiComponent, modifier, onClick)
+        IconButtonComponent(uiComponent, modifier, onClick, componentList, componentState)
         true
     }
 

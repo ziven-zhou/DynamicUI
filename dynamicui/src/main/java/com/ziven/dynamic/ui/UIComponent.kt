@@ -23,17 +23,19 @@ data class UIComponent(
 )
 
 @Serializable
-data class ComponentValue(
-    @SerialName("text")
-    var text: String? = null,
-    @SerialName("image")
-    var image: String? = null,
-    @SerialName("url")
-    var url: List<String>? = null,
-    @SerialName("clickable")
-    var clickable: Boolean? = null,
-    @SerialName("extras")
-    var extras: MutableMap<String, String>? = null,
+data class ComponentLayout(
+    @SerialName("width")
+    val width: Int? = null,
+    @SerialName("height")
+    val height: Int? = null,
+    @SerialName("start")
+    val start: Float? = null,
+    @SerialName("end")
+    val end: Float? = null,
+    @SerialName("top")
+    val top: Float? = null,
+    @SerialName("bottom")
+    val bottom: Float? = null,
 )
 
 @Serializable
@@ -77,19 +79,27 @@ data class ComponentStyle(
 )
 
 @Serializable
-data class ComponentLayout(
-    @SerialName("width")
-    val width: Int? = null,
-    @SerialName("height")
-    val height: Int? = null,
-    @SerialName("start")
-    val start: Float? = null,
-    @SerialName("end")
-    val end: Float? = null,
-    @SerialName("top")
-    val top: Float? = null,
-    @SerialName("bottom")
-    val bottom: Float? = null,
+data class ComponentValue(
+    @SerialName("text")
+    var text: String? = null,
+    @SerialName("image")
+    var image: String? = null,
+    @SerialName("click")
+    var click: List<ComponentClick>? = null,
+    @SerialName("clickable")
+    var clickable: Boolean? = null,
+    @SerialName("extras")
+    var extras: MutableMap<String, String>? = null,
+)
+
+@Serializable
+data class ComponentClick(
+    @SerialName("url")
+    val url: String? = null,
+    @SerialName("type")
+    val type: String? = null,
+    @SerialName("tryFirst")
+    val tryFirst: Boolean? = null,
 )
 
 data class ComponentAction(

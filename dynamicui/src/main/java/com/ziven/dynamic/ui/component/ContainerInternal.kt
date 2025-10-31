@@ -28,7 +28,7 @@ internal fun ColumnComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(
@@ -54,7 +54,7 @@ internal fun RowComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(
@@ -80,7 +80,7 @@ internal fun BoxComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(

@@ -186,7 +186,7 @@ internal fun FloatingActionButtonComponent(
     componentState: ComponentState? = null,
 ) {
     FloatingActionButton(
-        onClick = click(uiComponent, onClick),
+        onClick = click(uiComponent, onClick, componentList, componentState),
         modifier = modifier.componentLayout(uiComponent.layout),
         shape = uiComponent.style.toShape(FloatingActionButtonDefaults.shape),
         containerColor = uiComponent.style.toContainerColor(FloatingActionButtonDefaults.containerColor),

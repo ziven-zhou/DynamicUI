@@ -26,7 +26,7 @@ internal fun LazyColumnComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
         componentList?.let {
             items(
@@ -52,7 +52,7 @@ internal fun LazyRowComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick),
+                .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
         componentList?.let {
             items(

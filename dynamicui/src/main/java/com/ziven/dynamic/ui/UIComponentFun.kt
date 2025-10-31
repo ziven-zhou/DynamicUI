@@ -51,7 +51,11 @@ fun UIComponent.updateComponentValue(componentValue: ComponentValue) {
     }
     componentValue.text?.let { updateValue.text = it }
     componentValue.image?.let { updateValue.image = it }
-    componentValue.url?.let { updateValue.url = it.toMutableList() }
+    componentValue.click?.let {
+        val copy = mutableListOf<ComponentClick>()
+        it.forEach { click -> copy.add(click.copy()) }
+        updateValue.click = copy
+    }
     componentValue.extras?.let { updateValue.extras = it.toMutableMap() }
     componentValue.clickable?.let { updateValue.clickable = it }
 }
