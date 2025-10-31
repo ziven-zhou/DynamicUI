@@ -171,6 +171,15 @@ const val ITEM_JSON = """
                     "topRight": 34,
                     "bottomLeft": 34,
                     "bottomRight": 34
+                },
+                "value": {
+                    "click": [
+                        {
+                            "content": "Me Click",
+                            "type": "SnackBar",
+                            "tryFirst": true
+                        }
+                    ]
                 }
             },
             {

@@ -59,9 +59,3 @@ fun UIComponent.updateComponentValue(componentValue: ComponentValue) {
     componentValue.extras?.let { updateValue.extras = it.toMutableMap() }
     componentValue.clickable?.let { updateValue.clickable = it }
 }
-
-fun UIComponent.toComponentAction() =
-    ComponentAction(
-        componentId = this.componentId,
-        value = this.value?.copy(),
-    )

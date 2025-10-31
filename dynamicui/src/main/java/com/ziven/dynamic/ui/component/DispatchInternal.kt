@@ -18,6 +18,7 @@ internal fun DispatchRenderComponent(
     componentState: ComponentState? = null,
 ) {
     logPrint("RenderComponent: $uiComponent")
+    if (uiComponent.componentName.isNullOrEmpty()) return
     if (dispatchScaffoldComponent(uiComponent, modifier, onClick, componentList, componentState)) return
     if (dispatchListComponent(uiComponent, modifier, onClick, componentList, componentState)) return
     if (dispatchContainerComponent(uiComponent, modifier, onClick, componentList, componentState)) return

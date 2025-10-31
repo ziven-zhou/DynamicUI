@@ -1,10 +1,15 @@
 package com.ziven.dynamic.ui.component
 
+import androidx.compose.material3.SnackbarDuration
 import com.ziven.dynamic.ui.ComponentAction
+import com.ziven.dynamic.ui.ComponentClick
 import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
-import com.ziven.dynamic.ui.toComponentAction
+import com.ziven.dynamic.ui.internal.VModel
+import com.ziven.dynamic.ui.internal.launch
+import com.ziven.dynamic.ui.logPrint
+import kotlinx.coroutines.Dispatchers
 
 fun click(
     uiComponent: UIComponent,
@@ -19,9 +24,15 @@ fun click(
                 componentState,
             )
         ) {
-            onClick(uiComponent.toComponentAction())
+            onClick(toComponentAction(uiComponent))
         }
     }
+
+private fun toComponentAction(uiComponent: UIComponent) =
+    ComponentAction(
+        componentId = uiComponent.componentId,
+        value = uiComponent.value?.copy(),
+    )
 
 private fun dispatchClick(
     uiComponent: UIComponent,
@@ -29,21 +40,22 @@ private fun dispatchClick(
     componentState: ComponentState? = null,
 ): Boolean {
     val clicks = uiComponent.value?.click ?: return false
+    logPrint("dispatchClick: $clicks")
     if (clicks.isEmpty()) return false
     for (click in clicks) {
         if (click.tryFirst == true) {
             when (click.type) {
                 "Activity" ->
-                    if (toActivity(uiComponent, componentList, componentState)) return true
+                    if (toActivity(click, componentList, componentState)) return true
 
                 "Compose" ->
-                    if (toCompose(uiComponent, componentList, componentState)) return true
+                    if (toCompose(click, componentList, componentState)) return true
 
                 "SnackBar" ->
-                    if (toSnackBar(uiComponent, componentList, componentState)) return true
+                    if (toSnackBar(click, componentList, componentState)) return true
 
                 "Dialog" ->
-                    if (toDialog(uiComponent, componentList, componentState)) return true
+                    if (toDialog(click, componentList, componentState)) return true
             }
         }
     }
@@ -51,25 +63,51 @@ private fun dispatchClick(
 }
 
 private fun toActivity(
-    uiComponent: UIComponent,
+    componentClick: ComponentClick,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ): Boolean = false
 
 private fun toCompose(
-    uiComponent: UIComponent,
+    componentClick: ComponentClick,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ): Boolean = false
 
 private fun toSnackBar(
-    uiComponent: UIComponent,
+    componentClick: ComponentClick,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
-): Boolean = false
+): Boolean {
+    val snackBarHostState = componentState?.snackBarHostState ?: return false
+    val message = componentClick.content ?: return false
+    val duration = componentClick.duration
+    val actionLabel = componentClick.actionLabel
+    val withDismissAction = componentClick.withDismissAction ?: false
+    VModel.launch(Dispatchers.Main) {
+        snackBarHostState.showSnackbar(
+            message,
+            actionLabel,
+            withDismissAction,
+            duration(actionLabel, duration),
+        )
+    }
+    return true
+}
+
+private fun duration(
+    actionLabel: String?,
+    duration: String?,
+): SnackbarDuration =
+    when (duration) {
+        "Long" -> SnackbarDuration.Long
+        "Short" -> SnackbarDuration.Short
+        "Indefinite" -> SnackbarDuration.Indefinite
+        else -> if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
+    }
 
 private fun toDialog(
-    uiComponent: UIComponent,
+    componentClick: ComponentClick,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ): Boolean = false

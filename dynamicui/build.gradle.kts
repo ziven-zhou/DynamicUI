@@ -50,4 +50,5 @@ dependencies {
     implementation(libs.androidx.material3.icons)
     implementation(libs.androidx.compose.coil)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.androidx.compose.viewmodel)
 }

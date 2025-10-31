@@ -12,7 +12,7 @@ data class UIComponent(
     @SerialName("componentId")
     val componentId: String? = null,
     @SerialName("componentName")
-    val componentName: String,
+    val componentName: String? = null,
     val layout: ComponentLayout? = null,
     @SerialName("style")
     val style: ComponentStyle? = null,
@@ -84,22 +84,34 @@ data class ComponentValue(
     var text: String? = null,
     @SerialName("image")
     var image: String? = null,
-    @SerialName("click")
-    var click: List<ComponentClick>? = null,
     @SerialName("clickable")
     var clickable: Boolean? = null,
+    @SerialName("click")
+    var click: List<ComponentClick>? = null,
     @SerialName("extras")
     var extras: MutableMap<String, String>? = null,
 )
 
 @Serializable
 data class ComponentClick(
-    @SerialName("url")
-    val url: String? = null,
+    @SerialName("content")
+    val content: String? = null,
     @SerialName("type")
     val type: String? = null,
     @SerialName("tryFirst")
     val tryFirst: Boolean? = null,
+    @SerialName("deepLink")
+    val deepLink: String? = null,
+    @SerialName("packageName")
+    val packageName: String? = null,
+    @SerialName("className")
+    val className: String? = null,
+    @SerialName("actionLabel")
+    val actionLabel: String? = null,
+    @SerialName("withDismissAction")
+    val withDismissAction: Boolean? = null,
+    @SerialName("duration")
+    val duration: String? = null,
 )
 
 data class ComponentAction(
