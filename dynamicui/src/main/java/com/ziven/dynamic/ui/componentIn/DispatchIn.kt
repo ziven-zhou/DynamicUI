@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,7 +7,7 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
-import com.ziven.dynamic.ui.logPrint
+import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
 internal fun DispatchRenderComponent(

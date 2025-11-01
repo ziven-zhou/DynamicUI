@@ -1,5 +1,7 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.material3.SnackbarDuration
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentClick
@@ -8,8 +10,11 @@ import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.internal.VModel
 import com.ziven.dynamic.ui.internal.launch
-import com.ziven.dynamic.ui.logPrint
+import com.ziven.dynamic.ui.internal.logPrint
+import com.ziven.dynamic.ui.internal.runSafe
 import kotlinx.coroutines.Dispatchers
+import androidx.core.net.toUri
+import com.ziven.dynamic.ui.UIManager
 
 fun click(
     uiComponent: UIComponent,
@@ -53,9 +58,6 @@ private fun dispatchClick(
 
                 "SnackBar" ->
                     if (toSnackBar(click, componentList, componentState)) return true
-
-                "Dialog" ->
-                    if (toDialog(click, componentList, componentState)) return true
             }
         }
     }
@@ -66,7 +68,55 @@ private fun toActivity(
     componentClick: ComponentClick,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
-): Boolean = false
+): Boolean {
+    val context = UIManager.getContext()
+    if (context == null) {
+        throw RuntimeException("Place, UIManager.setContext() first.")
+    }
+    if (toDeepLink(context, componentClick.packageName, componentClick.deepLink)) return true
+    if (toActivity(context, componentClick.packageName, componentClick.className)) return true
+    return false
+}
+
+private fun toActivity(
+    context: Context,
+    packageName: String? = null,
+    className: String? = null,
+): Boolean {
+    if (packageName.isNullOrEmpty()) return false
+    val intent = Intent(Intent.ACTION_MAIN)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.`package` = packageName
+    if (!className.isNullOrEmpty()) {
+        intent.setClassName(packageName, className)
+    }
+    try {
+        context.startActivity(intent)
+        return true
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
+}
+
+private fun toDeepLink(
+    context: Context,
+    packageName: String? = null,
+    deepLink: String? = null,
+): Boolean {
+    if (deepLink.isNullOrEmpty()) return false
+    val intent = Intent(Intent.ACTION_VIEW)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    intent.`package` = packageName
+    intent.data = runSafe { deepLink.toUri() }
+    try {
+        context.startActivity(intent)
+        return true
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    return false
+}
 
 private fun toCompose(
     componentClick: ComponentClick,
@@ -105,9 +155,3 @@ private fun duration(
         "Indefinite" -> SnackbarDuration.Indefinite
         else -> if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
     }
-
-private fun toDialog(
-    componentClick: ComponentClick,
-    componentList: ComponentList? = null,
-    componentState: ComponentState? = null,
-): Boolean = false

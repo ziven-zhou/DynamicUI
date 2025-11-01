@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
-import com.ziven.dynamic.ui.runSafe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -27,5 +26,12 @@ class UIViewModel(
         }
     }
 
-    private fun jsonToBean(json: String): UIComponent? = runSafe("jsonToBean") { Json.decodeFromString<UIComponent>(json) }
+    private fun jsonToBean(json: String): UIComponent?  {
+        try {
+            return Json.decodeFromString<UIComponent>(json)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 }

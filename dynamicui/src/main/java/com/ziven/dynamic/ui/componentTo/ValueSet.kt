@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.internal
+package com.ziven.dynamic.ui.componentTo
 
 import androidx.compose.ui.unit.Dp
 

@@ -1,7 +1,7 @@
-package com.ziven.dynamic.ui.internal
+package com.ziven.dynamic.ui.componentTo
 
 import com.ziven.dynamic.ui.ComponentLayout
-import com.ziven.dynamic.ui.toDp
+import com.ziven.dynamic.ui.internal.toDp
 
 internal fun ComponentLayout?.toPadding(): PaddingValue? =
     if (this == null) {

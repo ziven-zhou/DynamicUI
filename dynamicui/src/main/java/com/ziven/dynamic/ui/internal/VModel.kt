@@ -8,10 +8,12 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-fun ViewModel.launch(
+internal fun ViewModel.launch(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> Unit,
-) = viewModelScope.launch(context) { block() }
+) = viewModelScope.launch(context, start) { block() }
 
-internal object VModel : ViewModel()
+internal object VModel : ViewModel() {
+    val storage = Storage()
+}

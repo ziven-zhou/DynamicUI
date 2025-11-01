@@ -1,11 +1,16 @@
-package com.ziven.dynamic.ui.internal
+package com.ziven.dynamic.ui.componentTo
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Abc
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.AccessAlarm
+import androidx.compose.material.icons.filled.AccessAlarms
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ziven.dynamic.ui.ComponentValue
 
@@ -21,6 +26,11 @@ internal fun ComponentValue?.toIcon(): ImageVector? =
         "Add" -> Icons.Default.Add
         "Close" -> Icons.Default.Close
         "Delete" -> Icons.Default.Delete
+        "Storage" -> Icons.Default.Storage
+        "Abc" -> Icons.Default.Abc
+        "AcUnit" -> Icons.Default.AcUnit
+        "AccessAlarm" -> Icons.Default.AccessAlarm
+        "AccessAlarms" -> Icons.Default.AccessAlarms
         "ArrowDropDown" -> Icons.Default.ArrowDropDown
         else -> null
     }

@@ -1,31 +1,36 @@
 package com.ziven.dynamic.ui
 
+import android.content.Context
 import androidx.annotation.MainThread
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.Composable
+import com.ziven.dynamic.ui.internal.Holder
+import com.ziven.dynamic.ui.internal.VModel
+import com.ziven.dynamic.ui.internal.notEmpty
 
 object UIManager {
-    private val componentMap = mutableStateMapOf<String, UIComponent>()
+    private val holder = Holder()
+
+    fun setContext(context: Context) {
+        holder.setContext(context)
+    }
+
+    fun getContext() = holder.getContext()
 
     @MainThread
-    fun addComponents(components: List<UIComponent>) = components.forEach { addComponent(it) }
+    fun addComponents(components: List<UIComponent>) = apply { VModel.storage.addAll(components) }
 
     @MainThread
-    fun addComponents(vararg components: UIComponent) = components.forEach { addComponent(it) }
+    fun addComponents(vararg components: UIComponent) = apply { VModel.storage.addAll(*components) }
 
     @MainThread
-    fun addComponent(parent: UIComponent) =
-        parent.forEachComponent { child ->
-            child.componentType?.let { type ->
-                logPrint("addComponent: $type: $child")
-                componentMap[type] = child
-            }
-        }
+    fun addComponent(component: UIComponent) = apply { VModel.storage.add(component) }
 
     @MainThread
-    fun getComponent(componentId: String?) =
-        let {
-            val component = if (componentId.isNullOrEmpty()) null else componentMap[componentId]?.copy()
-            logPrint("getComponent: $componentId: $component")
-            component
-        }
+    fun getComponent(componentType: String?) = componentType.notEmpty { VModel.storage[it] }
+
+    @Composable
+    fun RunComponent(
+        componentType: String?,
+        block: @Composable (UIComponent) -> Unit,
+    ) = getComponent(componentType)?.let { block.invoke(it) }
 }

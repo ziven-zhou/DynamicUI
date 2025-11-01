@@ -1,8 +1,8 @@
 package com.example.dynamic.ui.demo
 
-val uiList = listOf(SCAFFOLD_JSON, ROOT_JSON, ITEM_JSON)
+val uiList = listOf(ROOT_JSON, ITEM_JSON)
 
-const val SCAFFOLD_JSON = """
+const val ROOT_JSON = """
     {
         "componentType": "Scaffold",
         "componentId": "Scaffold",
@@ -66,11 +66,7 @@ const val SCAFFOLD_JSON = """
                 ]
             },
             {
-                "componentName": "SnackBar",
-                    "layout": {
-                    "height": 68,
-                    "width": -1
-                }
+                "componentName": "SnackBar"
             },
             {
                 "componentName": "FloatingActionButton",
@@ -78,61 +74,35 @@ const val SCAFFOLD_JSON = """
                     "height": -2,
                     "width": -2
                 },
-                "style": {
-                    "backgroundColor": "#006633"
-                },
                 "children": [
                     {
                         "componentName": "IconButton",
-                        "layout": {
-                            "height": -2,
-                            "width": -2
-                        },
-                        "style": {
-                            "foregroundColor": "#FFFFFF"
-                        },
                         "value": {
-                            "image": "Menu"
+                            "image": "Add"
                         }
                     }
                 ]
             },
             {
-               "componentName": "Other",
-               "componentType": "LazyColumn",
+               "componentName": "LazyColumn",
                "layout": {
                    "height": -1,
                    "width": -1
-               }
+               },
+               "children": [
+                    {
+                        "componentName": "Other",
+                        "componentType": "item"
+                    }
+               ]
             }
         ]
     }
-"""
-
-const val ROOT_JSON = """
-    {
-        "componentType": "LazyColumn",
-        "componentId": "LazyColumn",
-        "componentName": "LazyColumn",
-        "layout": {
-            "height": -1,
-            "width": -1,
-            "top": 4,
-            "bottom": 4
-        },
-        "children": [
-            {
-                "componentName": "Other",
-                "componentType": "99"
-            }
-        ]
-    }
-
 """
 
 const val ITEM_JSON = """
     {
-        "componentType": "99",
+        "componentType": "item",
         "componentId": "item",
         "componentName": "Row",
         "layout": {
@@ -144,7 +114,7 @@ const val ITEM_JSON = """
             "bottom": 4
         },
         "style": {
-            "backgroundColor": "#996633",
+            "backgroundColor": "#FFEFB8C8",
             "topLeft": 16,
             "topRight": 16,
             "bottomLeft": 16,
@@ -156,7 +126,7 @@ const val ITEM_JSON = """
                 "componentName": "Button",
                 "layout": {
                     "height":68,
-                    "width": 200,
+                    "width": 168,
                     "start": 16,
                     "end": 16,
                     "top": 16,
@@ -166,16 +136,16 @@ const val ITEM_JSON = """
                     "fontSize": 16,
                     "fontColor": "#FFFFFF",
                     "align": "TopCenter",
-                    "backgroundColor": "#0066FF",
-                    "topLeft": 34,
-                    "topRight": 34,
-                    "bottomLeft": 34,
-                    "bottomRight": 34
+                    "backgroundColor": "#80666666",
+                    "topLeft": 16,
+                    "topRight": 16,
+                    "bottomLeft": 16,
+                    "bottomRight": 16
                 },
                 "value": {
                     "click": [
                         {
-                            "content": "Me Click",
+                            "content": "I am a SnackBar.",
                             "type": "SnackBar",
                             "tryFirst": true
                         }

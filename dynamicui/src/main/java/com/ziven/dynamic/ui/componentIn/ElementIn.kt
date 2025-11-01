@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Spacer
@@ -15,25 +15,25 @@ import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
-import com.ziven.dynamic.ui.internal.componentClick
-import com.ziven.dynamic.ui.internal.componentUI
-import com.ziven.dynamic.ui.internal.toAlign
-import com.ziven.dynamic.ui.internal.toButtonColors
-import com.ziven.dynamic.ui.internal.toFontColor
-import com.ziven.dynamic.ui.internal.toFontFamily
-import com.ziven.dynamic.ui.internal.toFontSize
-import com.ziven.dynamic.ui.internal.toFontStyle
-import com.ziven.dynamic.ui.internal.toFontWeight
-import com.ziven.dynamic.ui.internal.toIcon
-import com.ziven.dynamic.ui.internal.toIconButtonColors
-import com.ziven.dynamic.ui.internal.toImage
-import com.ziven.dynamic.ui.internal.toMaxLines
-import com.ziven.dynamic.ui.internal.toMinLines
-import com.ziven.dynamic.ui.internal.toOverflow
-import com.ziven.dynamic.ui.internal.toQuality
-import com.ziven.dynamic.ui.internal.toScale
-import com.ziven.dynamic.ui.internal.toShape
-import com.ziven.dynamic.ui.internal.toText
+import com.ziven.dynamic.ui.componentTo.componentClick
+import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.toAlign
+import com.ziven.dynamic.ui.componentTo.toButtonColors
+import com.ziven.dynamic.ui.componentTo.toFontColor
+import com.ziven.dynamic.ui.componentTo.toFontFamily
+import com.ziven.dynamic.ui.componentTo.toFontSize
+import com.ziven.dynamic.ui.componentTo.toFontStyle
+import com.ziven.dynamic.ui.componentTo.toFontWeight
+import com.ziven.dynamic.ui.componentTo.toIcon
+import com.ziven.dynamic.ui.componentTo.toIconButtonColors
+import com.ziven.dynamic.ui.componentTo.toImage
+import com.ziven.dynamic.ui.componentTo.toMaxLines
+import com.ziven.dynamic.ui.componentTo.toMinLines
+import com.ziven.dynamic.ui.componentTo.toOverflow
+import com.ziven.dynamic.ui.componentTo.toQuality
+import com.ziven.dynamic.ui.componentTo.toScale
+import com.ziven.dynamic.ui.componentTo.toShape
+import com.ziven.dynamic.ui.componentTo.toText
 
 @Composable
 internal fun SpacerComponent(

@@ -2,11 +2,6 @@ package com.ziven.dynamic.ui
 
 import androidx.compose.runtime.Composable
 
-fun UIComponent.forEachComponent(block: (UIComponent) -> Unit) {
-    block(this)
-    children?.forEach { it.forEachComponent(block) }
-}
-
 @Composable
 fun UIComponent.ForEachChildComponent(block: @Composable (UIComponent) -> Unit) {
     children?.forEach { block.invoke(it) }
@@ -18,6 +13,11 @@ fun UIComponent.findChildComponentWithName(componentName: String): UIComponent? 
         if (child.componentName == componentName) return child
     }
     return null
+}
+
+fun UIComponent.forEachComponent(block: (UIComponent) -> Unit) {
+    block(this)
+    children?.forEach { it.forEachComponent(block) }
 }
 
 fun UIComponent.findComponentWithId(componentId: String): UIComponent? {

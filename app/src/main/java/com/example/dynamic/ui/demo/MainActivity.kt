@@ -5,46 +5,27 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dynamic.ui.demo.ui.theme.DynamicUITheme
+import com.ziven.dynamic.ui.ComponentClick
 import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ComponentValue
 import com.ziven.dynamic.ui.RenderComponent
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            DynamicUITheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
-        }
+        setContent { DynamicUITheme { DynamicUIView() } }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    DynamicUIView()
-}
 @Composable
 fun DynamicUIView() {
     val viewModel = viewModel<DataViewModel>()
@@ -61,29 +42,29 @@ fun DynamicUIView() {
                 componentSize = { mutableIntStateOf(viewModel.data.size) },
                 componentType = { viewModel.data.getOrNull(it)?.type },
             ) { index, componentId ->
-                val item = viewModel.data.getOrNull(index) ?: return@ComponentList null
-                val value =
-                    ComponentValue(
-                        text = item.title,
-                        image = item.image,
-                    )
-                Log.d("DynamicUIView", "DynamicUIView: $item $value")
-                value
+                viewModel.data.getOrNull(index)?.let {
+                    when (componentId) {
+                        "itemButton" ->
+                            ComponentValue(
+                                text = it.title,
+                                click =
+                                    listOf(
+                                        ComponentClick(
+                                            type = it.click,
+                                            content = "I am dynamic ui.",
+                                            tryFirst = true,
+                                            deepLink = "https://www.baidu.com",
+                                        ),
+                                    ),
+                            )
+
+                        "itemImage" -> ComponentValue(image = it.image)
+                        else -> null
+                    }
+                }
             },
         componentState = ComponentState(snackBarHostState),
     ) {
-        Log.d("DynamicUIView", "RenderComponent: $it")
-        viewModel.viewModelScope.launch {
-            Log.d("DynamicUIView", "Click: $it")
-            snackBarHostState.showSnackbar("SnackBarTest")
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DynamicUITheme {
-        Greeting("Android")
+        Log.d("DynamicUIView", "Click: $it")
     }
 }

@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,22 +24,22 @@ import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.findChildComponentWithName
-import com.ziven.dynamic.ui.internal.componentLayout
-import com.ziven.dynamic.ui.internal.componentUI
-import com.ziven.dynamic.ui.internal.toContainerColor
-import com.ziven.dynamic.ui.internal.toContentColor
-import com.ziven.dynamic.ui.internal.toFabPosition
-import com.ziven.dynamic.ui.internal.toFontColor
-import com.ziven.dynamic.ui.internal.toFontFamily
-import com.ziven.dynamic.ui.internal.toFontSize
-import com.ziven.dynamic.ui.internal.toFontStyle
-import com.ziven.dynamic.ui.internal.toFontWeight
-import com.ziven.dynamic.ui.internal.toMaxLines
-import com.ziven.dynamic.ui.internal.toMinLines
-import com.ziven.dynamic.ui.internal.toOverflow
-import com.ziven.dynamic.ui.internal.toShape
-import com.ziven.dynamic.ui.internal.toText
-import com.ziven.dynamic.ui.logPrint
+import com.ziven.dynamic.ui.componentTo.componentLayout
+import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.toContainerColor
+import com.ziven.dynamic.ui.componentTo.toContentColor
+import com.ziven.dynamic.ui.componentTo.toFabPosition
+import com.ziven.dynamic.ui.componentTo.toFontColor
+import com.ziven.dynamic.ui.componentTo.toFontFamily
+import com.ziven.dynamic.ui.componentTo.toFontSize
+import com.ziven.dynamic.ui.componentTo.toFontStyle
+import com.ziven.dynamic.ui.componentTo.toFontWeight
+import com.ziven.dynamic.ui.componentTo.toMaxLines
+import com.ziven.dynamic.ui.componentTo.toMinLines
+import com.ziven.dynamic.ui.componentTo.toOverflow
+import com.ziven.dynamic.ui.componentTo.toShape
+import com.ziven.dynamic.ui.componentTo.toText
+import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
 internal fun ScaffoldComponent(

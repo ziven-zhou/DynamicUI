@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.internal
+package com.ziven.dynamic.ui.componentTo
 
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.ButtonColors
@@ -20,9 +20,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import com.ziven.dynamic.ui.ComponentStyle
-import com.ziven.dynamic.ui.toColor
-import com.ziven.dynamic.ui.toDp
-import com.ziven.dynamic.ui.toSp
+import com.ziven.dynamic.ui.internal.toColor
+import com.ziven.dynamic.ui.internal.toDp
+import com.ziven.dynamic.ui.internal.toSp
 
 @Composable
 internal fun ComponentStyle?.toButtonColors(): ButtonColors =

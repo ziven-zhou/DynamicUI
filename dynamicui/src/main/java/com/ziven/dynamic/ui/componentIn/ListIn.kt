@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -10,8 +10,8 @@ import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
 import com.ziven.dynamic.ui.forEachComponent
-import com.ziven.dynamic.ui.internal.componentClick
-import com.ziven.dynamic.ui.internal.componentUI
+import com.ziven.dynamic.ui.componentTo.componentClick
+import com.ziven.dynamic.ui.componentTo.componentUI
 import com.ziven.dynamic.ui.updateComponentValue
 
 @Composable

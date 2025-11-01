@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.internal
+package com.ziven.dynamic.ui.componentTo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +17,8 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ComponentStyle
 import com.ziven.dynamic.ui.UIComponent
-import com.ziven.dynamic.ui.component.click
-import com.ziven.dynamic.ui.toColor
+import com.ziven.dynamic.ui.componentIn.click
+import com.ziven.dynamic.ui.internal.toColor
 
 internal fun Modifier.componentUI(uiComponent: UIComponent): Modifier =
     this.componentLayout(uiComponent.layout).componentStyle(uiComponent.style)

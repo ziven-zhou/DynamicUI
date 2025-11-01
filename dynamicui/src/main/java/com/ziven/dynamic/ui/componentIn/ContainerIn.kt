@@ -1,4 +1,4 @@
-package com.ziven.dynamic.ui.component
+package com.ziven.dynamic.ui.componentIn
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,11 +10,11 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
-import com.ziven.dynamic.ui.internal.componentClick
-import com.ziven.dynamic.ui.internal.componentUI
-import com.ziven.dynamic.ui.internal.toAlign
-import com.ziven.dynamic.ui.internal.toHorizontalAlign
-import com.ziven.dynamic.ui.internal.toVerticalAlign
+import com.ziven.dynamic.ui.componentTo.componentClick
+import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.toAlign
+import com.ziven.dynamic.ui.componentTo.toHorizontalAlign
+import com.ziven.dynamic.ui.componentTo.toVerticalAlign
 
 @Composable
 internal fun ColumnComponent(

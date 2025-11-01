@@ -23,8 +23,15 @@ class DataViewModel(
                         result.add(
                             DataBean(
                                 key = "Key#$it",
-                                type = "99",
-                                title = "Title#$it",
+                                type = "item",
+                                title = "I am a item$it",
+                                click =
+                                    when (it % 3) {
+                                        0 -> "Activity"
+                                        1 -> "Compose"
+                                        2 -> "SnackBar"
+                                        else -> "Other"
+                                    },
                                 icon = R.drawable.ic_launcher_background,
                                 image = "https://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960",
                             ),
