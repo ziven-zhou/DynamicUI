@@ -36,6 +36,14 @@ data class ComponentLayout(
     val top: Float? = null,
     @SerialName("bottom")
     val bottom: Float? = null,
+    @SerialName("contentStart")
+    val contentStart: Float? = null,
+    @SerialName("contentEnd")
+    val contentEnd: Float? = null,
+    @SerialName("contentTop")
+    val contentTop: Float? = null,
+    @SerialName("contentBottom")
+    val contentBottom: Float? = null,
 )
 
 @Serializable
@@ -96,10 +104,12 @@ data class ComponentValue(
 data class ComponentClick(
     @SerialName("content")
     val content: String? = null,
-    @SerialName("type")
-    val type: String? = null,
+    @SerialName("action")
+    val action: String? = null,
     @SerialName("tryFirst")
     val tryFirst: Boolean? = null,
+    @SerialName("returnAny")
+    val returnAny: Boolean? = null,
     @SerialName("deepLink")
     val deepLink: String? = null,
     @SerialName("packageName")

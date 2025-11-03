@@ -46,9 +46,10 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.viewmodel)
+    implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.material3.icons)
+    implementation(libs.androidx.compose.comterial.icons)
     implementation(libs.androidx.compose.coil)
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.androidx.compose.viewmodel)
 }

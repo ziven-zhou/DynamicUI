@@ -26,7 +26,7 @@ object UIManager {
     fun addComponent(component: UIComponent) = apply { VModel.storage.add(component) }
 
     @MainThread
-    fun getComponent(componentType: String?) = componentType.notEmpty { VModel.storage[it] }
+    fun getComponent(componentType: String?) = componentType.notEmpty { VModel.storage[it]?.copy() }
 
     @Composable
     fun RunComponent(

@@ -16,3 +16,17 @@ internal fun ComponentLayout?.toPadding(): PaddingValue? =
             bottom = bottom.toDp(),
         )
     }
+
+internal fun ComponentLayout?.toContentPadding(): PaddingValue? =
+    if (this == null) {
+        null
+    } else if (contentStart == null && contentEnd == null && contentTop == null && contentBottom == null) {
+        null
+    } else {
+        PaddingValue(
+            start = contentStart.toDp(),
+            top = contentTop.toDp(),
+            end = contentEnd.toDp(),
+            bottom = contentBottom.toDp(),
+        )
+    }

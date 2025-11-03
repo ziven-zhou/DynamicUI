@@ -17,10 +17,12 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ComponentValue
 import com.ziven.dynamic.ui.RenderComponent
+import com.ziven.dynamic.ui.UIManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        UIManager.setContext(this)
         enableEdgeToEdge()
         setContent { DynamicUITheme { DynamicUIView() } }
     }
@@ -40,9 +42,11 @@ fun DynamicUIView() {
         componentList =
             ComponentList(
                 componentSize = { mutableIntStateOf(viewModel.data.size) },
+                componentKey = { viewModel.data.getOrNull(it)?.key ?: "" },
                 componentType = { viewModel.data.getOrNull(it)?.type },
             ) { index, componentId ->
                 viewModel.data.getOrNull(index)?.let {
+                    Log.d("DynamicUIView", "Update: $it")
                     when (componentId) {
                         "itemButton" ->
                             ComponentValue(
@@ -50,15 +54,32 @@ fun DynamicUIView() {
                                 click =
                                     listOf(
                                         ComponentClick(
-                                            type = it.click,
+                                            action = it.click,
                                             content = "I am dynamic ui.",
                                             tryFirst = true,
-                                            deepLink = "https://www.baidu.com",
+                                            deepLink = it.deepLink,
+                                            packageName = it.packageName,
+                                            className = it.className,
                                         ),
                                     ),
                             )
 
-                        "itemImage" -> ComponentValue(image = it.image)
+                        "itemImage" ->
+                            ComponentValue(
+                                image = it.image,
+                                click =
+                                    listOf(
+                                        ComponentClick(
+                                            action = it.click,
+                                            content = "I am dynamic ui.",
+                                            tryFirst = true,
+                                            deepLink = it.deepLink,
+                                            packageName = it.packageName,
+                                            className = it.className,
+                                        ),
+                                    ),
+                            )
+
                         else -> null
                     }
                 }

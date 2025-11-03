@@ -1,5 +1,6 @@
 package com.ziven.dynamic.ui.componentTo
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.Dp
 
 internal data class CornerValue(
@@ -15,3 +16,15 @@ internal data class PaddingValue(
     val end: Dp,
     val bottom: Dp,
 )
+
+internal fun PaddingValue?.toPaddingValues(defValue: PaddingValues = PaddingValues()): PaddingValues =
+    if (this == null) {
+        defValue
+    } else {
+        PaddingValues(
+            start = start,
+            top = top,
+            end = end,
+            bottom = bottom,
+        )
+    }

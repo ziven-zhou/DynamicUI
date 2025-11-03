@@ -125,22 +125,22 @@ const val ITEM_JSON = """
                 "componentId": "itemButton",
                 "componentName": "Button",
                 "layout": {
-                    "height":68,
-                    "width": 168,
-                    "start": 16,
-                    "end": 16,
-                    "top": 16,
-                    "bottom": 16
+                    "height":48,
+                    "width": 120,
+                    "start": 8,
+                    "contentStart": 8,
+                    "contentEnd": 8
                 },
                 "style": {
-                    "fontSize": 16,
+                    "fontSize": 12,
                     "fontColor": "#FFFFFF",
                     "align": "TopCenter",
-                    "backgroundColor": "#80666666",
-                    "topLeft": 16,
-                    "topRight": 16,
-                    "bottomLeft": 16,
-                    "bottomRight": 16
+                    "maxLines": 1,
+                    "overflow": "Ellipsis",
+                    "topLeft": 24,
+                    "topRight": 24,
+                    "bottomLeft": 24,
+                    "bottomRight": 24
                 },
                 "value": {
                     "click": [
@@ -156,16 +156,27 @@ const val ITEM_JSON = """
                 "componentId": "itemImage",
                 "componentName": "Image",
                 "layout": {
-                    "start": 16,
-                    "end": 16,
-                    "top": 16,
-                    "bottom": 16
+                    "height": -1,
+                    "width": -1,
+                    "start": 8
                 },
                 "style": {
+                    "scale": "Crop",
+                    "quality": "High",
                     "topLeft": 16,
                     "topRight": 16,
                     "bottomLeft": 16,
                     "bottomRight": 16
+                },
+                "value": {
+                    "clickable": true
+                    "click": [
+                        {
+                            "content": "I am a Activity.",
+                            "type": "Activity",
+                            "tryFirst": true
+                        }
+                    ]
                 }
             }
         ]

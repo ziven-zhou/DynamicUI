@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DynamicUI">
         <activity
+            android:name=".SecondActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.DynamicUI">

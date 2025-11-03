@@ -19,6 +19,7 @@ import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
 import com.ziven.dynamic.ui.componentTo.toAlign
 import com.ziven.dynamic.ui.componentTo.toButtonColors
+import com.ziven.dynamic.ui.componentTo.toContentPadding
 import com.ziven.dynamic.ui.componentTo.toFontColor
 import com.ziven.dynamic.ui.componentTo.toFontFamily
 import com.ziven.dynamic.ui.componentTo.toFontSize
@@ -30,10 +31,12 @@ import com.ziven.dynamic.ui.componentTo.toImage
 import com.ziven.dynamic.ui.componentTo.toMaxLines
 import com.ziven.dynamic.ui.componentTo.toMinLines
 import com.ziven.dynamic.ui.componentTo.toOverflow
+import com.ziven.dynamic.ui.componentTo.toPaddingValues
 import com.ziven.dynamic.ui.componentTo.toQuality
 import com.ziven.dynamic.ui.componentTo.toScale
 import com.ziven.dynamic.ui.componentTo.toShape
 import com.ziven.dynamic.ui.componentTo.toText
+import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
 internal fun SpacerComponent(
@@ -103,6 +106,7 @@ internal fun ButtonComponent(
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
+    logPrint("ButtonComponent: $uiComponent")
     Button(
         modifier =
             modifier
@@ -110,6 +114,7 @@ internal fun ButtonComponent(
         onClick = click(uiComponent, onClick, componentList, componentState),
         shape = uiComponent.style.toShape(ButtonDefaults.shape),
         colors = uiComponent.style.toButtonColors(),
+        contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(ButtonDefaults.ContentPadding),
     ) {
         Text(
             text = uiComponent.value.toText(),
