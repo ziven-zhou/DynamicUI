@@ -1,6 +1,7 @@
 package com.example.dynamic.ui.demo
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ziven.dynamic.ui.UIComponent
@@ -22,15 +23,27 @@ class UIViewModel(
                         uiList.forEach { json -> jsonToBean(json)?.let { ui -> uiData.add(ui) } }
                         uiData
                     }.await()
-            result.let { UIManager.addComponents(it) }
+            result.let {
+                it.forEachIndexed { index, component ->
+                    Log.d(
+                        "UIComponent",
+                        "Parse$index: $component",
+                    )
+                }
+                UIManager.addComponents(it)
+            }
         }
     }
 
-    private fun jsonToBean(json: String): UIComponent?  {
+    private fun jsonToBean(json: String): UIComponent? {
         try {
             return Json.decodeFromString<UIComponent>(json)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.d(
+                "UIComponent",
+                "ParseError",
+                e,
+            )
         }
         return null
     }

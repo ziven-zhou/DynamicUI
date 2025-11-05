@@ -9,10 +9,21 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
-import com.ziven.dynamic.ui.forEachComponent
 import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.forEachComponent
 import com.ziven.dynamic.ui.updateComponentValue
+
+private fun makeWhich(
+    uiComponent: UIComponent,
+    componentState: ComponentState? = null,
+): String {
+    val route = componentState?.navHostController?.currentDestination?.route
+    if (route.isNullOrEmpty()) {
+        return uiComponent.listName ?: "/"
+    }
+    return uiComponent.listName?.let { "$it/$route" } ?: "/"
+}
 
 @Composable
 internal fun LazyColumnComponent(
@@ -28,13 +39,19 @@ internal fun LazyColumnComponent(
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
+        val which = makeWhich(uiComponent, componentState)
         componentList?.let {
             items(
-                count = it.componentSize().intValue,
-                key = it.componentKey,
-                contentType = { index -> it.componentType(index) },
+                count = it.componentSize(which).intValue,
+                key =
+                    if (it.componentKey != null) {
+                        { index -> it.componentKey.invoke(which, index) }
+                    } else {
+                        null
+                    },
+                contentType = { index -> it.componentType(which, index) },
             ) { index ->
-                ItemsComponent(index, onClick, componentList, componentState)
+                ItemsComponent(which, index, onClick, componentList, componentState)
             }
         }
     }
@@ -54,13 +71,19 @@ internal fun LazyRowComponent(
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
     ) {
+        val which = makeWhich(uiComponent, componentState)
         componentList?.let {
             items(
-                count = it.componentSize().intValue,
-                key = it.componentKey,
-                contentType = { index -> it.componentType(index) },
+                count = it.componentSize(which).intValue,
+                key =
+                    if (it.componentKey != null) {
+                        { index -> it.componentKey.invoke(which, index) }
+                    } else {
+                        null
+                    },
+                contentType = { index -> it.componentType(which, index) },
             ) { index ->
-                ItemsComponent(index, onClick, componentList, componentState)
+                ItemsComponent(which, index, onClick, componentList, componentState)
             }
         }
     }
@@ -68,16 +91,17 @@ internal fun LazyRowComponent(
 
 @Composable
 private fun ItemsComponent(
+    which: String,
     index: Int,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList,
     componentState: ComponentState? = null,
 ) {
-    val type = componentList.componentType(index) ?: return
+    val type = componentList.componentType(which, index) ?: return
     val parent = UIManager.getComponent(type) ?: return
     parent.forEachComponent { child ->
         child.componentId?.let { childId ->
-            componentList.componentData(index, childId)?.let {
+            componentList.componentData(which, index, childId)?.let {
                 child.updateComponentValue(it)
             }
         }

@@ -28,9 +28,24 @@ object UIManager {
     @MainThread
     fun getComponent(componentType: String?) = componentType.notEmpty { VModel.storage[it]?.copy() }
 
+    @MainThread
+    fun getComponent(
+        componentType: String?,
+        block: (UIComponent) -> Unit,
+    ) = componentType.notEmpty { VModel.storage[it]?.copy() }?.let { block.invoke(it) }
+
     @Composable
     fun RunComponent(
         componentType: String?,
         block: @Composable (UIComponent) -> Unit,
     ) = getComponent(componentType)?.let { block.invoke(it) }
+
+    @Composable
+    fun AddComponent(
+        uiComponent: UIComponent,
+        block: @Composable (UIComponent) -> Unit,
+    ) = uiComponent.let {
+        addComponent(it)
+        block.invoke(it)
+    }
 }

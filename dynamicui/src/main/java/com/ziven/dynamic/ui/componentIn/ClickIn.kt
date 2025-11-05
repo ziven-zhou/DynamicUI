@@ -14,6 +14,7 @@ import com.ziven.dynamic.ui.internal.launch
 import com.ziven.dynamic.ui.internal.logPrint
 import com.ziven.dynamic.ui.internal.runSafe
 import kotlinx.coroutines.Dispatchers
+import java.net.URLEncoder
 
 fun click(
     uiComponent: UIComponent,
@@ -121,7 +122,16 @@ private fun startActivity(intent: Intent): Boolean {
 private fun toCompose(
     componentClick: ComponentClick,
     componentState: ComponentState? = null,
-): Boolean = false
+): Boolean {
+    val control = componentState?.navHostController ?: return false
+    var route = componentClick.routeName ?: return false
+    componentClick.routeParams?.forEach {
+        route += "/${URLEncoder.encode(it, "UTF-8")}"
+    }
+    logPrint("RouteComponent toCompose: $route")
+    control.navigate(route)
+    return true
+}
 
 private fun toSnackBar(
     componentClick: ComponentClick,

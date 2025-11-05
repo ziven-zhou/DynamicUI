@@ -18,7 +18,9 @@ internal interface IStorage {
 
     fun add(component: UIComponent) {
         component.forEachComponent {
-            it.componentType.notEmpty { type -> set(type, component) }
+            if (it.componentTemp == true) {
+                it.componentType.notEmpty { type -> set(type, component) }
+            }
         }
     }
 

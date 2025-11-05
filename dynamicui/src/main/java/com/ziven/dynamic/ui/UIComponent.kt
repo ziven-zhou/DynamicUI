@@ -2,13 +2,20 @@ package com.ziven.dynamic.ui
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableIntState
+import androidx.navigation.NavHostController
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 @Serializable
 data class UIComponent(
     @SerialName("componentType")
     val componentType: String? = null,
+    @SerialName("componentTemp")
+    val componentTemp: Boolean? = null,
     @SerialName("componentId")
     val componentId: String? = null,
     @SerialName("componentName")
@@ -18,10 +25,18 @@ data class UIComponent(
     val style: ComponentStyle? = null,
     @SerialName("value")
     var value: ComponentValue? = null,
+    @SerialName("listName")
+    val listName: String? = null,
+    @SerialName("routeName")
+    val routeName: String? = null,
+    @SerialName("routeParams")
+    val routeParams: List<String>? = null,
     @SerialName("children")
     val children: List<UIComponent>? = null,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 @Serializable
 data class ComponentLayout(
     @SerialName("width")
@@ -46,6 +61,8 @@ data class ComponentLayout(
     val contentBottom: Float? = null,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 @Serializable
 data class ComponentStyle(
     @SerialName("foregroundColor")
@@ -86,6 +103,8 @@ data class ComponentStyle(
     val fabPosition: String? = null,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 @Serializable
 data class ComponentValue(
     @SerialName("text")
@@ -100,6 +119,8 @@ data class ComponentValue(
     var extras: MutableMap<String, String>? = null,
 )
 
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 @Serializable
 data class ComponentClick(
     @SerialName("content")
@@ -122,6 +143,10 @@ data class ComponentClick(
     val withDismissAction: Boolean? = null,
     @SerialName("duration")
     val duration: String? = null,
+    @SerialName("routeName")
+    val routeName: String? = null,
+    @SerialName("routeParams")
+    var routeParams: MutableList<String>? = null,
 )
 
 data class ComponentAction(
@@ -130,12 +155,13 @@ data class ComponentAction(
 )
 
 class ComponentList(
-    val componentSize: () -> MutableIntState,
-    val componentKey: ((index: Int) -> Any)? = null,
-    val componentType: (index: Int) -> String?,
-    val componentData: (index: Int, componentId: String) -> ComponentValue?,
+    val componentSize: (which: String) -> MutableIntState,
+    val componentKey: ((which: String, index: Int) -> Any)? = null,
+    val componentType: (which: String, index: Int) -> String?,
+    val componentData: (which: String, index: Int, componentId: String) -> ComponentValue?,
 )
 
 class ComponentState(
     val snackBarHostState: SnackbarHostState? = null,
+    val navHostController: NavHostController? = null,
 )

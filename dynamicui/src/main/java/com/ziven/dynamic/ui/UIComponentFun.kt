@@ -15,6 +15,10 @@ fun UIComponent.findChildComponentWithName(componentName: String): UIComponent? 
     return null
 }
 
+fun UIComponent.forEachChildComponent(block: (UIComponent) -> Unit) {
+    children?.forEach { block.invoke(it) }
+}
+
 fun UIComponent.forEachComponent(block: (UIComponent) -> Unit) {
     block(this)
     children?.forEach { it.forEachComponent(block) }
@@ -44,11 +48,7 @@ fun UIComponent.updateComponentValueWithId(
 ) = findComponentWithId(componentId)?.updateComponentValue(componentValue)
 
 fun UIComponent.updateComponentValue(componentValue: ComponentValue) {
-    var updateValue = this.value
-    if (updateValue == null) {
-        updateValue = ComponentValue()
-        this.value = componentValue
-    }
+    val updateValue = this.toValue()
     componentValue.text?.let { updateValue.text = it }
     componentValue.image?.let { updateValue.image = it }
     componentValue.click?.let {
@@ -56,6 +56,34 @@ fun UIComponent.updateComponentValue(componentValue: ComponentValue) {
         it.forEach { click -> copy.add(click.copy()) }
         updateValue.click = copy
     }
-    componentValue.extras?.let { updateValue.extras = it.toMutableMap() }
+    componentValue.extras?.let { this.toExtras().putAll(it) }
     componentValue.clickable?.let { updateValue.clickable = it }
+}
+
+fun UIComponent.addExtras(
+    key: String,
+    value: String,
+) = apply { this.toExtras()[key] = value }
+
+fun UIComponent.addExtras(vararg extras: Pair<String, String>) = apply { addExtras(extras.toMap()) }
+
+fun UIComponent.addExtras(extras: Map<String, String>) = apply { this.toExtras().putAll(extras) }
+
+private fun UIComponent.toValue(): ComponentValue {
+    var updateValue = value
+    if (updateValue == null) {
+        updateValue = ComponentValue()
+        value = updateValue
+    }
+    return updateValue
+}
+
+private fun UIComponent.toExtras(): MutableMap<String, String> {
+    val value = toValue()
+    var extras = value.extras
+    if (extras == null) {
+        extras = mutableMapOf()
+        value.extras = extras
+    }
+    return extras
 }

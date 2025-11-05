@@ -1,10 +1,36 @@
 package com.example.dynamic.ui.demo
 
-val uiList = listOf(ROOT_JSON, ITEM_JSON)
+val uiList = listOf(ROUTE_JSON, ROOT_JSON, ITEM_JSON)
+
+const val ROUTE_JSON = """
+    {
+        "componentType": "Root",
+        "componentTemp": true,
+        "children": [
+            {
+                "componentType": "Scaffold",
+                "routeName": "Main"
+            },
+            {
+                "componentType": "Scaffold",
+                "routeName": "Second"
+            },
+            {
+                "componentType": "Scaffold",
+                "routeName": "Third",
+                "routeParams": [
+                    "param1",
+                    "param2"
+                ]
+            }
+        ]
+    }
+"""
 
 const val ROOT_JSON = """
     {
         "componentType": "Scaffold",
+        "componentTemp": true,
         "componentId": "Scaffold",
         "componentName": "Scaffold",
         "layout": {
@@ -40,7 +66,14 @@ const val ROOT_JSON = """
                             "width": -2
                         },
                         "value": {
-                            "image": "Menu"
+                            "image": "Menu",
+                            "click": [
+                                {
+                                    "action": "Compose",
+                                    "tryFirst": true,
+                                    "routeName": "Main"
+                                }
+                            ]
                         }
                     },
                     {
@@ -50,7 +83,14 @@ const val ROOT_JSON = """
                             "width": -2
                         },
                         "value": {
-                            "image": "Add"
+                            "image": "Add",
+                            "click": [
+                                {
+                                    "action": "Compose",
+                                    "tryFirst": true,
+                                    "routeName": "Second"
+                                }
+                            ]
                         }
                     },
                     {
@@ -60,7 +100,18 @@ const val ROOT_JSON = """
                             "width": -2
                         },
                         "value": {
-                            "image": "Close"
+                            "image": "Close",
+                            "click": [
+                                {
+                                    "action": "Compose",
+                                    "tryFirst": true,
+                                    "routeName": "Third",
+                                    "routeParams": [
+                                        "value1",
+                                        "value2"
+                                    ]
+                                }
+                            ]
                         }
                     }
                 ]
@@ -103,6 +154,7 @@ const val ROOT_JSON = """
 const val ITEM_JSON = """
     {
         "componentType": "item",
+        "componentTemp": true,
         "componentId": "item",
         "componentName": "Row",
         "layout": {
@@ -146,7 +198,7 @@ const val ITEM_JSON = """
                     "click": [
                         {
                             "content": "I am a SnackBar.",
-                            "type": "SnackBar",
+                            "action": "SnackBar",
                             "tryFirst": true
                         }
                     ]
@@ -173,7 +225,7 @@ const val ITEM_JSON = """
                     "click": [
                         {
                             "content": "I am a Activity.",
-                            "type": "Activity",
+                            "action": "Activity",
                             "tryFirst": true
                         }
                     ]

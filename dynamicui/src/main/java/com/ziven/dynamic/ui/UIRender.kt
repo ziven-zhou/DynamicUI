@@ -1,8 +1,7 @@
 package com.ziven.dynamic.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.ziven.dynamic.ui.componentIn.DispatchRenderComponent
+import com.ziven.dynamic.ui.componentIn.RouteComponent
 
 @Composable
 fun RenderComponent(
@@ -11,7 +10,7 @@ fun RenderComponent(
     componentState: ComponentState? = null,
     onClick: (ComponentAction) -> Unit = {},
 ) = UIManager.RunComponent(componentType) {
-    RenderComponent(it, componentList, componentState, onClick)
+    RouteComponent(it, componentList, componentState, onClick)
 }
 
 @Composable
@@ -20,4 +19,6 @@ fun RenderComponent(
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
     onClick: (ComponentAction) -> Unit = {},
-) = DispatchRenderComponent(uiComponent, Modifier, onClick, componentList, componentState)
+) = UIManager.AddComponent(uiComponent) {
+    RouteComponent(it, componentList, componentState, onClick)
+}

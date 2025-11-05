@@ -20,6 +20,12 @@ internal fun ComponentValue?.toImage() = this?.image
 
 internal fun ComponentValue?.toClickable() = this?.clickable ?: false
 
+internal fun ComponentValue?.toExtras(): MutableMap<String, String> = this?.extras?.toMutableMap() ?: mutableMapOf()
+
+internal fun ComponentValue?.toKeys(): MutableList<String> = this.toExtras().keys.toMutableList()
+
+internal fun ComponentValue?.toValues(): MutableList<String> = this.toExtras().values.toMutableList()
+
 internal fun ComponentValue?.toIcon(): ImageVector? =
     when (this?.image) {
         "Menu" -> Icons.Default.Menu

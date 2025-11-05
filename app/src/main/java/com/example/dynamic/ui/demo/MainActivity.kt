@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.dynamic.ui.demo.ui.theme.DynamicUITheme
 import com.ziven.dynamic.ui.ComponentClick
 import com.ziven.dynamic.ui.ComponentList
@@ -37,16 +38,17 @@ fun DynamicUIView() {
         viewModel.updateUi()
     }
     val snackBarHostState = remember { SnackbarHostState() }
+    val navHostController = rememberNavController()
     RenderComponent(
-        componentType = "Scaffold",
+        componentType = "Root",
         componentList =
             ComponentList(
-                componentSize = { mutableIntStateOf(viewModel.data.size) },
-                componentKey = { viewModel.data.getOrNull(it)?.key ?: "" },
-                componentType = { viewModel.data.getOrNull(it)?.type },
-            ) { index, componentId ->
+                componentSize = { which -> mutableIntStateOf(viewModel.data.size) },
+                componentKey = { which, index -> viewModel.data.getOrNull(index)?.key ?: "" },
+                componentType = { which, index -> viewModel.data.getOrNull(index)?.type },
+            ) { which, index, componentId ->
                 viewModel.data.getOrNull(index)?.let {
-                    Log.d("DynamicUIView", "Update: $it")
+                    Log.d("UIComponent", "Update: $it")
                     when (componentId) {
                         "itemButton" ->
                             ComponentValue(
@@ -84,8 +86,8 @@ fun DynamicUIView() {
                     }
                 }
             },
-        componentState = ComponentState(snackBarHostState),
+        componentState = ComponentState(snackBarHostState, navHostController),
     ) {
-        Log.d("DynamicUIView", "Click: $it")
+        Log.d("UIComponent", "Click: $it")
     }
 }
