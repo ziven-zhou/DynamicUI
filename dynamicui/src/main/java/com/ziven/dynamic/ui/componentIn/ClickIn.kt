@@ -16,7 +16,7 @@ import com.ziven.dynamic.ui.internal.runSafe
 import kotlinx.coroutines.Dispatchers
 import java.net.URLEncoder
 
-fun click(
+internal fun click(
     uiComponent: UIComponent,
     onClick: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
@@ -51,9 +51,27 @@ private fun dispatchClick(
     componentClick: ComponentClick,
     componentState: ComponentState? = null,
 ): Boolean {
+    logPrint("ComponentClick: ${componentClick.action}")
     when (componentClick.action) {
         "Activity" ->
-            if (toActivity(componentClick)) return true
+            if (toActivity(
+                    componentClick.packageName,
+                    componentClick.className,
+                    componentClick.activityParams,
+                )
+            ) {
+                return true
+            }
+
+        "DeepLink" ->
+            if (toDeepLink(
+                    componentClick.packageName,
+                    componentClick.deepLink,
+                    componentClick.activityParams,
+                )
+            ) {
+                return true
+            }
 
         "Compose" ->
             if (toCompose(componentClick, componentState)) return true
@@ -68,21 +86,13 @@ private fun dispatchClick(
     return false
 }
 
-private fun toActivity(componentClick: ComponentClick): Boolean {
-    val packageName = componentClick.packageName
-    val deepLink = componentClick.deepLink
-    val className = componentClick.className
-    if (toDeepLink(packageName, deepLink)) return true
-    if (toActivity(packageName, className)) return true
-    return false
-}
-
 private fun toActivity(
     packageName: String? = null,
     className: String? = null,
+    activityParams: MutableMap<String, String>? = null,
 ): Boolean {
     if (packageName.isNullOrEmpty()) return false
-    val intent = newIntent(Intent.ACTION_MAIN, packageName)
+    val intent = newIntent(Intent.ACTION_MAIN, packageName, activityParams)
     className?.let { intent.setClassName(packageName, className) }
     return startActivity(intent)
 }
@@ -90,9 +100,10 @@ private fun toActivity(
 private fun toDeepLink(
     packageName: String? = null,
     deepLink: String? = null,
+    activityParams: MutableMap<String, String>? = null,
 ): Boolean {
     if (deepLink.isNullOrEmpty()) return false
-    val intent = newIntent(Intent.ACTION_VIEW, packageName)
+    val intent = newIntent(Intent.ACTION_VIEW, packageName, activityParams)
     intent.data = runSafe { deepLink.toUri() } ?: return false
     return startActivity(intent)
 }
@@ -100,16 +111,19 @@ private fun toDeepLink(
 private fun newIntent(
     action: String,
     packageName: String? = null,
+    activityParams: MutableMap<String, String>? = null,
 ) = Intent(action).apply {
     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     `package` = packageName
+    activityParams?.forEach { (key, value) ->
+        putExtra(key, value)
+    }
+    logPrint("activityParams: $activityParams")
 }
 
 private fun startActivity(intent: Intent): Boolean {
-    val context = UIManager.getContext()
-    if (context == null) {
-        throw RuntimeException("Place, UIManager.setContext() first.")
-    }
+    val context =
+        UIManager.getContext() ?: throw RuntimeException("Place, UIManager.setContext() first.")
     try {
         context.startActivity(intent)
         return true
@@ -128,7 +142,7 @@ private fun toCompose(
     componentClick.routeParams?.forEach {
         route += "/${URLEncoder.encode(it, "UTF-8")}"
     }
-    logPrint("RouteComponent toCompose: $route")
+    logPrint("ComponentClick toCompose: $route")
     control.navigate(route)
     return true
 }

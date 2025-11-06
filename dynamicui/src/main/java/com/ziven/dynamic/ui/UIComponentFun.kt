@@ -45,45 +45,144 @@ fun UIComponent.updateComponentValueWithId(vararg values: Pair<String, Component
 fun UIComponent.updateComponentValueWithId(
     componentId: String,
     componentValue: ComponentValue,
-) = findComponentWithId(componentId)?.updateComponentValue(componentValue)
+) = apply { findComponentWithId(componentId)?.updateComponentValue(componentValue) }
 
-fun UIComponent.updateComponentValue(componentValue: ComponentValue) {
-    val updateValue = this.toValue()
-    componentValue.text?.let { updateValue.text = it }
-    componentValue.image?.let { updateValue.image = it }
-    componentValue.click?.let {
-        val copy = mutableListOf<ComponentClick>()
-        it.forEach { click -> copy.add(click.copy()) }
-        updateValue.click = copy
-    }
-    componentValue.extras?.let { this.toExtras().putAll(it) }
-    componentValue.clickable?.let { updateValue.clickable = it }
-}
+fun UIComponent.updateComponentValue(componentValue: ComponentValue) = apply { this.value = componentValue }
 
 fun UIComponent.addExtras(
     key: String,
     value: String,
 ) = apply { this.toExtras()[key] = value }
 
-fun UIComponent.addExtras(vararg extras: Pair<String, String>) = apply { addExtras(extras.toMap()) }
+fun UIComponent.addExtras(vararg extras: Pair<String, String>) = apply { this.addExtras(extras.toMap()) }
 
 fun UIComponent.addExtras(extras: Map<String, String>) = apply { this.toExtras().putAll(extras) }
 
 private fun UIComponent.toValue(): ComponentValue {
-    var updateValue = value
+    var updateValue = this.value
     if (updateValue == null) {
         updateValue = ComponentValue()
-        value = updateValue
+        this.value = updateValue
     }
     return updateValue
 }
 
 private fun UIComponent.toExtras(): MutableMap<String, String> {
-    val value = toValue()
-    var extras = value.extras
+    val updateValue = this.toValue()
+    var extras = updateValue.extras
     if (extras == null) {
         extras = mutableMapOf()
-        value.extras = extras
+        updateValue.extras = extras
     }
     return extras
 }
+
+fun ofComponentValue(
+    text: String? = null,
+    image: String? = null,
+    clickable: Boolean? = false,
+    click: List<ComponentClick>? = null,
+    extras: MutableMap<String, String>? = null,
+): ComponentValue =
+    ComponentValue(
+        text = text,
+        image = image,
+        clickable = clickable,
+        click = click,
+        extras = extras,
+    )
+
+fun ofTextValue(text: String? = null): ComponentValue = ofComponentValue(text = text)
+
+fun ofImageValue(image: String? = null): ComponentValue = ofComponentValue(image = image)
+
+fun ofClickValue(vararg click: ComponentClick): ComponentValue = ofClickValue(click = click.toList())
+
+fun ofClickValue(click: List<ComponentClick>? = null): ComponentValue = ofComponentValue(clickable = true, click = click)
+
+fun ComponentValue.addText(text: String? = null): ComponentValue = apply { this.text = text }
+
+fun ComponentValue.addImage(image: String? = null): ComponentValue = apply { this.image = image }
+
+fun ofComponentClick(
+    content: String? = null,
+    action: String? = null,
+    tryFirst: Boolean? = true,
+    returnAny: Boolean? = false,
+    deepLink: String? = null,
+    packageName: String? = null,
+    className: String? = null,
+    actionLabel: String? = null,
+    withDismissAction: Boolean? = null,
+    duration: String? = null,
+    routeName: String? = null,
+    routeParams: MutableList<String>? = null,
+    activityParams: MutableMap<String, String>? = null,
+): ComponentClick =
+    ComponentClick(
+        content = content,
+        action = action,
+        tryFirst = tryFirst,
+        returnAny = returnAny,
+        deepLink = deepLink,
+        packageName = packageName,
+        className = className,
+        actionLabel = actionLabel,
+        withDismissAction = withDismissAction,
+        duration = duration,
+        routeName = routeName,
+        routeParams = routeParams,
+        activityParams = activityParams,
+    )
+
+fun ofActivityClick(
+    packageName: String?,
+    className: String? = null,
+    activityParams: MutableMap<String, String>? = null,
+): ComponentClick =
+    ofComponentClick(
+        action = "Activity",
+        packageName = packageName,
+        className = className,
+        activityParams = activityParams,
+    )
+
+fun ofDeepLinkClick(
+    deepLink: String?,
+    packageName: String? = null,
+    activityParams: MutableMap<String, String>? = null,
+): ComponentClick =
+    ofComponentClick(
+        action = "DeepLink",
+        packageName = packageName,
+        deepLink = deepLink,
+        activityParams = activityParams,
+    )
+
+fun ofComposeClick(
+    routeName: String?,
+    routeParams: MutableList<String>? = null,
+): ComponentClick =
+    ofComponentClick(
+        action = "Compose",
+        routeName = routeName,
+        routeParams = routeParams,
+    )
+
+fun ofSnackBarClick(
+    content: String?,
+    actionLabel: String? = null,
+    withDismissAction: Boolean? = null,
+    duration: String? = null,
+): ComponentClick =
+    ofComponentClick(
+        content = content,
+        action = "SnackBar",
+        actionLabel = actionLabel,
+        withDismissAction = withDismissAction,
+        duration = duration,
+    )
+
+fun ComponentClick.toList(): List<ComponentClick> = listOf(this)
+
+fun ComponentClick.toComponentValue(): ComponentValue = ofClickValue(this)

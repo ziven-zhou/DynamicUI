@@ -1,6 +1,6 @@
 package com.example.dynamic.ui.demo
 
-val uiList = listOf(ROUTE_JSON, ROOT_JSON, ITEM_JSON)
+val uiList = listOf(ROUTE_JSON, ROOT_JSON, ITEM_JSON, DETAIL_JSON)
 
 const val ROUTE_JSON = """
     {
@@ -21,6 +21,14 @@ const val ROUTE_JSON = """
                 "routeParams": [
                     "param1",
                     "param2"
+                ]
+            },
+            {
+                "componentType": "Detail",
+                "routeName": "Detail",
+                "routeParams": [
+                    "title",
+                    "image"
                 ]
             }
         ]
@@ -224,11 +232,53 @@ const val ITEM_JSON = """
                     "clickable": true
                     "click": [
                         {
-                            "content": "I am a Activity.",
-                            "action": "Activity",
-                            "tryFirst": true
+                            "action": "Compose",
+                            "tryFirst": true,
+                            "routeName": "Detail",
+                            "routeParams": [
+                                "DetailValue",
+                                "ImageValue"
+                            ]
                         }
                     ]
+                }
+            }
+        ]
+    }
+"""
+
+const val DETAIL_JSON = """
+    {
+        "componentType": "Detail",
+        "componentTemp": true,
+        "componentId": "Detail",
+        "componentName": "Scaffold",
+        "layout": {
+            "width": -1,
+            "height": -1
+        },
+        "children": [
+            {
+                "componentName": "TopBar",
+                "componentId": "DetailTopBar",
+                "layout": {
+                    "height": -2,
+                    "width": -1
+                },
+                "value": {
+                    "text": "Detail"
+                },
+                "style": {
+                    "fontSize": 24,
+                    "fontColor": "#000000"
+                }
+            },
+            {
+                "componentName": "Image",
+                "componentId": "DetailImage",
+                "layout": {
+                    "height": -2,
+                    "width": -2
                 }
             }
         ]

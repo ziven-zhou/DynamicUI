@@ -147,6 +147,8 @@ data class ComponentClick(
     val routeName: String? = null,
     @SerialName("routeParams")
     var routeParams: MutableList<String>? = null,
+    @SerialName("activityParams")
+    val activityParams: MutableMap<String, String>? = null,
 )
 
 data class ComponentAction(
@@ -164,4 +166,5 @@ class ComponentList(
 class ComponentState(
     val snackBarHostState: SnackbarHostState? = null,
     val navHostController: NavHostController? = null,
+    val updateValue: ((which: String, component: UIComponent, value: Map<String, String>) -> Boolean)? = null,
 )

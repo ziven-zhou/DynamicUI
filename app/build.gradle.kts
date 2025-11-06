@@ -65,5 +65,6 @@ dependencies {
     implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.compose.viewmodel)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.androidx.compose.coil)
     implementation(project(":dynamicui"))
 }

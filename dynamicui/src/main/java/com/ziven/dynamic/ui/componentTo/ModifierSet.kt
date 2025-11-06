@@ -88,7 +88,8 @@ internal fun Modifier.componentClick(
     componentState: ComponentState? = null,
 ): Modifier =
     if (uiComponent.value.toClickable()) {
-        this.clickable { click(uiComponent, onClick, componentList, componentState)() }
+        val click = click(uiComponent, onClick, componentList, componentState)
+        this.clickable { click.invoke() }
     } else {
         this
     }

@@ -47,6 +47,7 @@ internal fun RouteComponent(
     val navHostController = componentState?.navHostController
     val componentRoutes = uiComponent.toComponentRoute()
     if (navHostController == null || componentRoutes.isEmpty()) {
+        componentState?.updateValue?.invoke("/", uiComponent, emptyMap())
         DispatchRenderComponent(uiComponent, Modifier, onClick, componentList, componentState)
         return
     }
@@ -61,13 +62,17 @@ internal fun RouteComponent(
                 }
                 logPrint("RouteComponent: routeName: $routeName, routeParams: ${route.params}")
                 composable(route = routeName, arguments = routeParams) { value ->
+                    val extras = mutableMapOf<String, String>()
                     value.arguments?.let { arguments ->
                         route.params.forEach { key ->
                             arguments.getString(key)?.let {
-                                route.component.addExtras(key, it)
+                                extras[key] = it
                             }
                         }
-                        logPrint("RouteComponent: extras: ${route.component.value?.extras}")
+                        if (componentState.updateValue?.invoke(routeName, route.component, extras) != true) {
+                            route.component.addExtras(extras)
+                        }
+                        logPrint("RouteComponent: extras: $extras")
                     }
                     DispatchRenderComponent(
                         route.component,
