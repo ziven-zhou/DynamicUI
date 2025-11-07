@@ -118,6 +118,7 @@ fun ofComponentClick(
     routeName: String? = null,
     routeParams: MutableList<String>? = null,
     activityParams: MutableMap<String, String>? = null,
+    backType: String? = null,
 ): ComponentClick =
     ComponentClick(
         content = content,
@@ -133,6 +134,7 @@ fun ofComponentClick(
         routeName = routeName,
         routeParams = routeParams,
         activityParams = activityParams,
+        backType = backType,
     )
 
 fun ofActivityClick(
@@ -181,6 +183,22 @@ fun ofSnackBarClick(
         actionLabel = actionLabel,
         withDismissAction = withDismissAction,
         duration = duration,
+    )
+
+fun ofToastClick(
+    content: String?,
+    duration: String? = null,
+): ComponentClick =
+    ofComponentClick(
+        action = "Toast",
+        content = content,
+        duration = duration,
+    )
+
+fun ofBackClick(backType: String?): ComponentClick =
+    ofComponentClick(
+        action = "Back",
+        backType = backType,
     )
 
 fun ComponentClick.toList(): List<ComponentClick> = listOf(this)

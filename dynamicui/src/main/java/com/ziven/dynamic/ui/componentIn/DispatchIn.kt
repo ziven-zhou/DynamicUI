@@ -19,6 +19,9 @@ internal fun DispatchRenderComponent(
 ) {
     logPrint("RenderComponent: $uiComponent")
     if (uiComponent.componentName.isNullOrEmpty()) return
+    uiComponent.componentId?.let {
+        componentState?.updateValue?.invoke("$it/", uiComponent, emptyMap())
+    }
     if (dispatchScaffoldComponent(uiComponent, modifier, onClick, componentList, componentState)) return
     if (dispatchListComponent(uiComponent, modifier, onClick, componentList, componentState)) return
     if (dispatchContainerComponent(uiComponent, modifier, onClick, componentList, componentState)) return

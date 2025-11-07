@@ -149,6 +149,8 @@ data class ComponentClick(
     var routeParams: MutableList<String>? = null,
     @SerialName("activityParams")
     val activityParams: MutableMap<String, String>? = null,
+    @SerialName("backType")
+    val backType: String? = null,
 )
 
 data class ComponentAction(

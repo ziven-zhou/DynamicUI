@@ -13,11 +13,7 @@ const val ROUTE_JSON = """
             },
             {
                 "componentType": "Scaffold",
-                "routeName": "Second"
-            },
-            {
-                "componentType": "Scaffold",
-                "routeName": "Third",
+                "routeName": "Second",
                 "routeParams": [
                     "param1",
                     "param2"
@@ -96,13 +92,18 @@ const val ROOT_JSON = """
                                 {
                                     "action": "Compose",
                                     "tryFirst": true,
-                                    "routeName": "Second"
+                                    "routeName": "Second",
+                                    "routeParams": [
+                                        "value1",
+                                        "value2"
+                                    ]
                                 }
                             ]
                         }
                     },
                     {
                         "componentName": "IconButton",
+                        "componentId": "IconButtonClose",
                         "layout": {
                             "height": -2,
                             "width": -2
@@ -111,13 +112,8 @@ const val ROOT_JSON = """
                             "image": "Close",
                             "click": [
                                 {
-                                    "action": "Compose",
-                                    "tryFirst": true,
-                                    "routeName": "Third",
-                                    "routeParams": [
-                                        "value1",
-                                        "value2"
-                                    ]
+                                    "action": "Back",
+                                    "tryFirst": true
                                 }
                             ]
                         }

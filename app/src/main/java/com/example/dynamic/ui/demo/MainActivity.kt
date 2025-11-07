@@ -10,12 +10,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dynamic.ui.demo.ui.theme.DynamicUITheme
 import com.ziven.dynamic.ui.RenderComponent
-import com.ziven.dynamic.ui.UIManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        UIManager.setContext(this)
         enableEdgeToEdge()
         setContent { DynamicUITheme { DynamicUIView() } }
     }

@@ -1,6 +1,7 @@
 package com.ziven.dynamic.ui.componentIn
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.material3.SnackbarDuration
 import androidx.core.net.toUri
 import com.ziven.dynamic.ui.ComponentAction
@@ -53,56 +54,38 @@ private fun dispatchClick(
 ): Boolean {
     logPrint("ComponentClick: ${componentClick.action}")
     when (componentClick.action) {
-        "Activity" ->
-            if (toActivity(
-                    componentClick.packageName,
-                    componentClick.className,
-                    componentClick.activityParams,
-                )
-            ) {
-                return true
-            }
+        "Activity" -> if (toActivity(componentClick)) return true
 
-        "DeepLink" ->
-            if (toDeepLink(
-                    componentClick.packageName,
-                    componentClick.deepLink,
-                    componentClick.activityParams,
-                )
-            ) {
-                return true
-            }
+        "DeepLink" -> if (toDeepLink(componentClick)) return true
 
-        "Compose" ->
-            if (toCompose(componentClick, componentState)) return true
+        "Compose" -> if (toCompose(componentClick, componentState)) return true
 
-        "SnackBar" ->
-            if (toSnackBar(componentClick, componentState)) return true
+        "SnackBar" -> if (toSnackBar(componentClick, componentState)) return true
 
-        "Dialog" -> false
-        "Toast" -> false
-        "Back" -> false
+        "Dialog" -> if (toDialog(componentClick)) return true
+
+        "Toast" -> if (toToast(componentClick)) return true
+
+        "Back" -> if (toBack(componentClick, componentState)) return true
     }
     return false
 }
 
-private fun toActivity(
-    packageName: String? = null,
-    className: String? = null,
-    activityParams: MutableMap<String, String>? = null,
-): Boolean {
+private fun toActivity(componentClick: ComponentClick): Boolean {
+    val packageName = componentClick.packageName
     if (packageName.isNullOrEmpty()) return false
+    val className = componentClick.className
+    val activityParams = componentClick.activityParams
     val intent = newIntent(Intent.ACTION_MAIN, packageName, activityParams)
     className?.let { intent.setClassName(packageName, className) }
     return startActivity(intent)
 }
 
-private fun toDeepLink(
-    packageName: String? = null,
-    deepLink: String? = null,
-    activityParams: MutableMap<String, String>? = null,
-): Boolean {
+private fun toDeepLink(componentClick: ComponentClick): Boolean {
+    val deepLink = componentClick.deepLink
     if (deepLink.isNullOrEmpty()) return false
+    val packageName = componentClick.packageName
+    val activityParams = componentClick.activityParams
     val intent = newIntent(Intent.ACTION_VIEW, packageName, activityParams)
     intent.data = runSafe { deepLink.toUri() } ?: return false
     return startActivity(intent)
@@ -161,13 +144,13 @@ private fun toSnackBar(
             message,
             actionLabel,
             withDismissAction,
-            duration(actionLabel, duration),
+            snackBarDuration(actionLabel, duration),
         )
     }
     return true
 }
 
-private fun duration(
+private fun snackBarDuration(
     actionLabel: String?,
     duration: String?,
 ): SnackbarDuration =
@@ -177,3 +160,39 @@ private fun duration(
         "Indefinite" -> SnackbarDuration.Indefinite
         else -> if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
     }
+
+private fun toDialog(componentClick: ComponentClick): Boolean {
+    return false
+}
+
+private fun toToast(componentClick: ComponentClick): Boolean {
+    val message = componentClick.content ?: return false
+    Toast.makeText(UIManager.getContext(), message, toastDuration(componentClick.duration)).show()
+    return true
+}
+
+private fun toastDuration(duration: String?): Int =
+    when (duration) {
+        "Long" -> Toast.LENGTH_LONG
+        else -> Toast.LENGTH_SHORT
+    }
+
+private fun toBack(
+    componentClick: ComponentClick,
+    componentState: ComponentState? = null,
+): Boolean {
+    logPrint("ComponentClick toBack: ${componentClick.backType}")
+    when(componentClick.backType) {
+        "Activity" -> {
+            val activity = UIManager.getActivity() ?: return false
+            activity.finish()
+            return true
+        }
+        "Compose" -> {
+            val controller = componentState?.navHostController ?: return false
+            controller.popBackStack()
+            return true
+        }
+        else -> return false
+    }
+}

@@ -47,7 +47,6 @@ internal fun RouteComponent(
     val navHostController = componentState?.navHostController
     val componentRoutes = uiComponent.toComponentRoute()
     if (navHostController == null || componentRoutes.isEmpty()) {
-        componentState?.updateValue?.invoke("/", uiComponent, emptyMap())
         DispatchRenderComponent(uiComponent, Modifier, onClick, componentList, componentState)
         return
     }

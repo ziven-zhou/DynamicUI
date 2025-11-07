@@ -20,11 +20,12 @@ class DataViewModel(
                 async(Dispatchers.IO) {
                     val result = mutableListOf<DataBean>()
                     repeat(40) {
-                        when (it % 4) {
+                        when (it % 5) {
                             0 -> result.add(makeDataBean("Activity", it))
                             1 -> result.add(makeDataBean("Compose", it))
                             2 -> result.add(makeDataBean("SnackBar", it))
                             3 -> result.add(makeDataBean("DeepLink", it))
+                            4 -> result.add(makeDataBean("Toast", it))
                         }
                     }
                     result

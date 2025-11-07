@@ -12,11 +12,13 @@ import com.ziven.dynamic.ui.ComponentValue
 import com.ziven.dynamic.ui.addImage
 import com.ziven.dynamic.ui.addText
 import com.ziven.dynamic.ui.ofActivityClick
+import com.ziven.dynamic.ui.ofBackClick
 import com.ziven.dynamic.ui.ofComposeClick
 import com.ziven.dynamic.ui.ofDeepLinkClick
 import com.ziven.dynamic.ui.ofImageValue
 import com.ziven.dynamic.ui.ofSnackBarClick
 import com.ziven.dynamic.ui.ofTextValue
+import com.ziven.dynamic.ui.ofToastClick
 import com.ziven.dynamic.ui.toComponentValue
 import com.ziven.dynamic.ui.updateComponentValueWithId
 
@@ -37,6 +39,7 @@ internal fun mainList(model: DataViewModel): ComponentList {
                         "Detail",
                         mutableListOf(it.content, it.image ?: ""),
                     ).toComponentValue().addImage(it.image)
+
                 else -> null
             }
         }
@@ -51,13 +54,16 @@ private fun makeComponentValue(dataBean: DataBean): ComponentValue? =
                 dataBean.className,
                 mutableMapOf("title" to dataBean.content, "image" to (dataBean.image ?: "")),
             ).toComponentValue()
+
         "DeepLink" -> ofDeepLinkClick(dataBean.deepLink).toComponentValue()
         "Compose" ->
             ofComposeClick(
                 "Detail",
                 mutableListOf(dataBean.content, dataBean.image ?: ""),
             ).toComponentValue()
+
         "SnackBar" -> ofSnackBarClick(content = dataBean.content).toComponentValue()
+        "Toast" -> ofToastClick(dataBean.content).toComponentValue()
         else -> null
     }
 
@@ -67,6 +73,12 @@ internal fun mainState(): ComponentState {
     val navHostController = rememberNavController()
     return ComponentState(snackBarHostState, navHostController) { which, component, value ->
         Log.d("UIComponent", "ComponentState: which:$which value:$value")
+        component.updateComponentValueWithId(
+            "IconButtonClose",
+            ofBackClick("Activity")
+                .toComponentValue()
+                .addImage("Close"),
+        )
         if (value.isNotEmpty()) {
             component
                 .updateComponentValueWithId("DetailTopBar", ofTextValue(value["title"]))

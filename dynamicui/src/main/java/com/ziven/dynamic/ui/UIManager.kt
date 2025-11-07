@@ -10,11 +10,13 @@ import com.ziven.dynamic.ui.internal.notEmpty
 object UIManager {
     private val holder = Holder()
 
-    fun setContext(context: Context) {
-        holder.setContext(context)
+    fun setContext(context: Context, cacheActivity: Boolean = false) {
+        holder.setContext(context, cacheActivity)
     }
 
     fun getContext() = holder.getContext()
+
+    internal fun getActivity() = holder.getActivity()
 
     @MainThread
     fun addComponents(components: List<UIComponent>) = apply { VModel.storage.addAll(components) }
