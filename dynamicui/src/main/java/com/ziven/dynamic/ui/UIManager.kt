@@ -10,7 +10,10 @@ import com.ziven.dynamic.ui.internal.notEmpty
 object UIManager {
     private val holder = Holder()
 
-    fun setContext(context: Context, cacheActivity: Boolean = false) {
+    fun setContext(
+        context: Context,
+        cacheActivity: Boolean = false,
+    ) {
         holder.setContext(context, cacheActivity)
     }
 

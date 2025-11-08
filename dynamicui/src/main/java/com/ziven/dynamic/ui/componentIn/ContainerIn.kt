@@ -14,7 +14,9 @@ import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
 import com.ziven.dynamic.ui.componentTo.toAlign
 import com.ziven.dynamic.ui.componentTo.toHorizontalAlign
+import com.ziven.dynamic.ui.componentTo.toHorizontalAlign2
 import com.ziven.dynamic.ui.componentTo.toVerticalAlign
+import com.ziven.dynamic.ui.componentTo.toVerticalAlign2
 
 @Composable
 internal fun ColumnComponent(
@@ -29,6 +31,8 @@ internal fun ColumnComponent(
             modifier
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
+        verticalArrangement = uiComponent.style.toVerticalAlign2(),
+        horizontalAlignment = uiComponent.style.toHorizontalAlign(),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(
@@ -55,6 +59,8 @@ internal fun RowComponent(
             modifier
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
+        horizontalArrangement = uiComponent.style.toHorizontalAlign2(),
+        verticalAlignment = uiComponent.style.toVerticalAlign(),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(
@@ -81,6 +87,7 @@ internal fun BoxComponent(
             modifier
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
+        contentAlignment = uiComponent.style.toAlign(),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(

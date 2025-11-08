@@ -1,5 +1,6 @@
 package com.ziven.dynamic.ui.componentTo
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
@@ -107,21 +108,21 @@ internal fun ComponentStyle?.toFontFamily(): FontFamily? =
         else -> null
     }
 
-internal fun ComponentStyle?.toOverflow(): TextOverflow =
+internal fun ComponentStyle?.toOverflow(defValue: TextOverflow = TextOverflow.Clip): TextOverflow =
     when (this?.overflow) {
         "Clip" -> TextOverflow.Clip
         "Ellipsis" -> TextOverflow.Ellipsis
         "Visible" -> TextOverflow.Visible
         "StartEllipsis" -> TextOverflow.StartEllipsis
         "MiddleEllipsis" -> TextOverflow.MiddleEllipsis
-        else -> TextOverflow.Clip
+        else -> defValue
     }
 
 internal fun ComponentStyle?.toMaxLines(): Int = this?.maxLines ?: Int.MAX_VALUE
 
 internal fun ComponentStyle?.toMinLines(): Int = this?.minLines ?: 1
 
-internal fun ComponentStyle?.toAlign(): Alignment =
+internal fun ComponentStyle?.toAlign(defValue: Alignment = Alignment.Center): Alignment =
     when (this?.align) {
         "TopStart" -> Alignment.TopStart
         "TopCenter" -> Alignment.TopCenter
@@ -134,26 +135,48 @@ internal fun ComponentStyle?.toAlign(): Alignment =
         "BottomStart" -> Alignment.BottomStart
         "BottomCenter" -> Alignment.BottomCenter
         "BottomEnd" -> Alignment.BottomEnd
-        else -> Alignment.Center
+        else -> defValue
     }
 
-internal fun ComponentStyle?.toVerticalAlign(): Alignment.Vertical =
+internal fun ComponentStyle?.toVerticalAlign(defValue: Alignment.Vertical = Alignment.Top): Alignment.Vertical =
     when (this?.align) {
         "Top" -> Alignment.Top
         "CenterVertically" -> Alignment.CenterVertically
         "Bottom" -> Alignment.Bottom
-        else -> Alignment.CenterVertically
+        else -> defValue
     }
 
-internal fun ComponentStyle?.toHorizontalAlign(): Alignment.Horizontal =
+internal fun ComponentStyle?.toHorizontalAlign(defValue: Alignment.Horizontal = Alignment.Start): Alignment.Horizontal =
     when (this?.align) {
         "Start" -> Alignment.Start
         "CenterHorizontally" -> Alignment.CenterHorizontally
         "End" -> Alignment.End
-        else -> Alignment.CenterHorizontally
+        else -> defValue
     }
 
-internal fun ComponentStyle?.toScale(): ContentScale =
+internal fun ComponentStyle?.toVerticalAlign2(defValue: Arrangement.Vertical = Arrangement.Top): Arrangement.Vertical =
+    when (this?.align) {
+        "Top" -> Arrangement.Top
+        "Bottom" -> Arrangement.Bottom
+        "Center" -> Arrangement.Center
+        "SpaceAround" -> Arrangement.SpaceAround
+        "SpaceBetween" -> Arrangement.SpaceBetween
+        "SpaceEvenly" -> Arrangement.SpaceEvenly
+        else -> defValue
+    }
+
+internal fun ComponentStyle?.toHorizontalAlign2(defValue: Arrangement.Horizontal = Arrangement.Start): Arrangement.Horizontal =
+    when (this?.align) {
+        "Start" -> Arrangement.Start
+        "End" -> Arrangement.End
+        "Center" -> Arrangement.Center
+        "SpaceAround" -> Arrangement.SpaceAround
+        "SpaceBetween" -> Arrangement.SpaceBetween
+        "SpaceEvenly" -> Arrangement.SpaceEvenly
+        else -> defValue
+    }
+
+internal fun ComponentStyle?.toScale(defValue: ContentScale = ContentScale.Fit): ContentScale =
     when (this?.scale) {
         "Crop" -> ContentScale.Crop
         "Fit" -> ContentScale.Fit
@@ -162,23 +185,23 @@ internal fun ComponentStyle?.toScale(): ContentScale =
         "Inside" -> ContentScale.Inside
         "None" -> ContentScale.None
         "FillBounds" -> ContentScale.FillBounds
-        else -> ContentScale.Fit
+        else -> defValue
     }
 
-internal fun ComponentStyle?.toQuality(): FilterQuality =
+internal fun ComponentStyle?.toQuality(defValue: FilterQuality = FilterQuality.Low): FilterQuality =
     when (this?.quality) {
         "None" -> FilterQuality.None
         "High" -> FilterQuality.High
         "Medium" -> FilterQuality.Medium
         "Low" -> FilterQuality.Low
-        else -> FilterQuality.Low
+        else -> defValue
     }
 
-internal fun ComponentStyle?.toFabPosition(): FabPosition =
+internal fun ComponentStyle?.toFabPosition(defValue: FabPosition = FabPosition.End): FabPosition =
     when (this?.fabPosition) {
         "End" -> FabPosition.End
         "Start" -> FabPosition.Start
         "EndOverlay" -> FabPosition.EndOverlay
         "Center" -> FabPosition.Center
-        else -> FabPosition.End
+        else -> defValue
     }

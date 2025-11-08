@@ -1,5 +1,6 @@
 package com.ziven.dynamic.ui.componentIn
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
@@ -11,6 +12,13 @@ import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.UIManager
 import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.toContentPadding
+import com.ziven.dynamic.ui.componentTo.toHorizontalAlign
+import com.ziven.dynamic.ui.componentTo.toHorizontalAlign2
+import com.ziven.dynamic.ui.componentTo.toPaddingValues
+import com.ziven.dynamic.ui.componentTo.toReverseLayout
+import com.ziven.dynamic.ui.componentTo.toVerticalAlign
+import com.ziven.dynamic.ui.componentTo.toVerticalAlign2
 import com.ziven.dynamic.ui.forEachComponent
 import com.ziven.dynamic.ui.updateComponentValue
 
@@ -38,6 +46,13 @@ internal fun LazyColumnComponent(
             modifier
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
+        contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(),
+        reverseLayout = uiComponent.layout.toReverseLayout(),
+        horizontalAlignment = uiComponent.style.toHorizontalAlign(),
+        verticalArrangement =
+            uiComponent.style.toVerticalAlign2(
+                if (!uiComponent.layout.toReverseLayout()) Arrangement.Top else Arrangement.Bottom,
+            ),
     ) {
         val which = makeWhich(uiComponent, componentState)
         componentList?.let {
@@ -70,6 +85,13 @@ internal fun LazyRowComponent(
             modifier
                 .componentUI(uiComponent)
                 .componentClick(uiComponent, onClick, componentList, componentState),
+        contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(),
+        reverseLayout = uiComponent.layout.toReverseLayout(),
+        verticalAlignment = uiComponent.style.toVerticalAlign(),
+        horizontalArrangement =
+            uiComponent.style.toHorizontalAlign2(
+                if (!uiComponent.layout.toReverseLayout()) Arrangement.Start else Arrangement.End,
+            ),
     ) {
         val which = makeWhich(uiComponent, componentState)
         componentList?.let {

@@ -23,11 +23,12 @@ import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
 import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
-import com.ziven.dynamic.ui.findChildComponentWithName
 import com.ziven.dynamic.ui.componentTo.componentLayout
 import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.toAlign
 import com.ziven.dynamic.ui.componentTo.toContainerColor
 import com.ziven.dynamic.ui.componentTo.toContentColor
+import com.ziven.dynamic.ui.componentTo.toContentPadding
 import com.ziven.dynamic.ui.componentTo.toFabPosition
 import com.ziven.dynamic.ui.componentTo.toFontColor
 import com.ziven.dynamic.ui.componentTo.toFontFamily
@@ -37,8 +38,10 @@ import com.ziven.dynamic.ui.componentTo.toFontWeight
 import com.ziven.dynamic.ui.componentTo.toMaxLines
 import com.ziven.dynamic.ui.componentTo.toMinLines
 import com.ziven.dynamic.ui.componentTo.toOverflow
+import com.ziven.dynamic.ui.componentTo.toPaddingValues
 import com.ziven.dynamic.ui.componentTo.toShape
 import com.ziven.dynamic.ui.componentTo.toText
+import com.ziven.dynamic.ui.findChildComponentWithName
 import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
@@ -80,6 +83,7 @@ internal fun ScaffoldComponent(
                 Modifier
                     .fillMaxSize()
                     .padding(padding),
+            contentAlignment = uiComponent.style.toAlign(Alignment.TopStart),
         ) {
             uiComponent.ForEachChildComponent { child ->
                 when (child.componentName) {
@@ -145,6 +149,7 @@ internal fun BottomBarComponent(
         modifier = modifier.componentLayout(uiComponent.layout),
         containerColor = uiComponent.style.toContainerColor(BottomAppBarDefaults.containerColor),
         contentColor = uiComponent.style.toContentColor(BottomAppBarDefaults.containerColor),
+        contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(),
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -174,7 +179,10 @@ internal fun SnackBarComponent(
 ) {
     logPrint("SnackBarComponent: $componentState")
     componentState?.snackBarHostState ?: return
-    SnackbarHost(hostState = componentState.snackBarHostState)
+    SnackbarHost(
+        modifier = modifier.componentUI(uiComponent),
+        hostState = componentState.snackBarHostState,
+    )
 }
 
 @Composable

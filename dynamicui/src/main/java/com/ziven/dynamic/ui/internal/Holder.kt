@@ -14,7 +14,10 @@ internal class Holder : Application.ActivityLifecycleCallbacks {
     private var application: Application? = null
     private var cacheActivity: WeakReference<Activity>? = null
 
-    fun setContext(context: Context, cacheActivity: Boolean) {
+    fun setContext(
+        context: Context,
+        cacheActivity: Boolean,
+    ) {
         if (context is Application) {
             application = context
         } else {
@@ -29,9 +32,9 @@ internal class Holder : Application.ActivityLifecycleCallbacks {
         }
     }
 
-    fun getContext(): Context? = application
+    fun getContext(): Context = getApplication()
 
-    fun getApplication(): Application? = application
+    fun getApplication(): Application = application ?: throw RuntimeException("Place, UIManager.setContext() first.")
 
     fun getActivity(): Activity? = cacheActivity?.get()
 

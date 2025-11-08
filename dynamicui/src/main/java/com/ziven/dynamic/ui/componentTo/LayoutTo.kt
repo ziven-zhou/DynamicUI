@@ -30,3 +30,5 @@ internal fun ComponentLayout?.toContentPadding(): PaddingValue? =
             bottom = contentBottom.toDp(),
         )
     }
+
+internal fun ComponentLayout?.toReverseLayout(): Boolean = this?.reverseLayout == true

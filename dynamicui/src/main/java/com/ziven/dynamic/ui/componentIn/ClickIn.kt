@@ -105,10 +105,8 @@ private fun newIntent(
 }
 
 private fun startActivity(intent: Intent): Boolean {
-    val context =
-        UIManager.getContext() ?: throw RuntimeException("Place, UIManager.setContext() first.")
     try {
-        context.startActivity(intent)
+        UIManager.getContext().startActivity(intent)
         return true
     } catch (e: Exception) {
         e.printStackTrace()
@@ -161,13 +159,12 @@ private fun snackBarDuration(
         else -> if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
     }
 
-private fun toDialog(componentClick: ComponentClick): Boolean {
-    return false
-}
+private fun toDialog(componentClick: ComponentClick): Boolean = false
 
 private fun toToast(componentClick: ComponentClick): Boolean {
     val message = componentClick.content ?: return false
-    Toast.makeText(UIManager.getContext(), message, toastDuration(componentClick.duration)).show()
+    val context = UIManager.getActivity() ?: UIManager.getContext()
+    Toast.makeText(context, message, toastDuration(componentClick.duration)).show()
     return true
 }
 
@@ -182,17 +179,19 @@ private fun toBack(
     componentState: ComponentState? = null,
 ): Boolean {
     logPrint("ComponentClick toBack: ${componentClick.backType}")
-    when(componentClick.backType) {
+    when (componentClick.backType) {
         "Activity" -> {
             val activity = UIManager.getActivity() ?: return false
             activity.finish()
             return true
         }
+
         "Compose" -> {
             val controller = componentState?.navHostController ?: return false
             controller.popBackStack()
             return true
         }
+
         else -> return false
     }
 }

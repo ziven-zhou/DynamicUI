@@ -59,6 +59,8 @@ data class ComponentLayout(
     val contentTop: Float? = null,
     @SerialName("contentBottom")
     val contentBottom: Float? = null,
+    @SerialName("reverseLayout")
+    val reverseLayout: Boolean? = null,
 )
 
 @OptIn(ExperimentalSerializationApi::class)
