@@ -229,7 +229,7 @@ internal fun SwitchComponent(
         },
         thumbContent = {
             uiComponent.ForEachChildComponent { child ->
-                if (child.value.toChecked()) {
+                if (componentValue.toChecked()) {
                     DispatchRenderComponent(
                         child,
                         Modifier,
