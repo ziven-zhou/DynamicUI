@@ -83,12 +83,12 @@ internal fun Modifier.componentBackgroundColor(style: ComponentStyle): Modifier 
 
 internal fun Modifier.componentClick(
     uiComponent: UIComponent,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ): Modifier =
     if (uiComponent.value.toClickable()) {
-        val click = click(uiComponent, onClick, componentList, componentState)
+        val click = click(uiComponent, onAction, componentList, componentState)
         this.clickable { click.invoke() }
     } else {
         this

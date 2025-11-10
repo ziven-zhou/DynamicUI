@@ -103,6 +103,8 @@ data class ComponentStyle(
     val quality: String? = null,
     @SerialName("fabPosition")
     val fabPosition: String? = null,
+    @SerialName("colors")
+    var colors: MutableMap<String, String>? = null,
 )
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -117,6 +119,10 @@ data class ComponentValue(
     var clickable: Boolean? = null,
     @SerialName("click")
     var click: List<ComponentClick>? = null,
+    @SerialName("checked")
+    var checked: Boolean? = null,
+    @SerialName("enabled")
+    var enabled: Boolean? = null,
     @SerialName("extras")
     var extras: MutableMap<String, String>? = null,
 )
@@ -156,6 +162,7 @@ data class ComponentClick(
 )
 
 data class ComponentAction(
+    val actionType: String?,
     val componentId: String? = null,
     val value: ComponentValue? = null,
 )

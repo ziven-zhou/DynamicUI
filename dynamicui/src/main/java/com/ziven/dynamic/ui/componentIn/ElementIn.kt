@@ -7,6 +7,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,12 +15,17 @@ import coil.compose.rememberAsyncImagePainter
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
+import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
+import com.ziven.dynamic.ui.componentTo.setChecked
 import com.ziven.dynamic.ui.componentTo.toAlign
 import com.ziven.dynamic.ui.componentTo.toButtonColors
+import com.ziven.dynamic.ui.componentTo.toChecked
+import com.ziven.dynamic.ui.componentTo.toColors
 import com.ziven.dynamic.ui.componentTo.toContentPadding
+import com.ziven.dynamic.ui.componentTo.toEnabled
 import com.ziven.dynamic.ui.componentTo.toFontColor
 import com.ziven.dynamic.ui.componentTo.toFontFamily
 import com.ziven.dynamic.ui.componentTo.toFontSize
@@ -35,7 +41,9 @@ import com.ziven.dynamic.ui.componentTo.toPaddingValues
 import com.ziven.dynamic.ui.componentTo.toQuality
 import com.ziven.dynamic.ui.componentTo.toScale
 import com.ziven.dynamic.ui.componentTo.toShape
+import com.ziven.dynamic.ui.componentTo.toSwitchColors
 import com.ziven.dynamic.ui.componentTo.toText
+import com.ziven.dynamic.ui.forEachChildComponent
 import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
@@ -52,7 +60,7 @@ internal fun SpacerComponent(
 internal fun TextComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -60,7 +68,7 @@ internal fun TextComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         text = uiComponent.value.toText(),
         fontSize = uiComponent.style.toFontSize(),
         color = uiComponent.style.toFontColor(),
@@ -77,7 +85,7 @@ internal fun TextComponent(
 internal fun ImageComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -85,7 +93,7 @@ internal fun ImageComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         painter =
             rememberAsyncImagePainter(
                 model = uiComponent.value.toImage(),
@@ -102,7 +110,7 @@ internal fun ImageComponent(
 internal fun ButtonComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -111,10 +119,13 @@ internal fun ButtonComponent(
         modifier =
             modifier
                 .componentUI(uiComponent),
-        onClick = click(uiComponent, onClick, componentList, componentState),
+        onClick = click(uiComponent, onAction, componentList, componentState),
         shape = uiComponent.style.toShape(ButtonDefaults.shape),
         colors = uiComponent.style.toButtonColors(),
-        contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(ButtonDefaults.ContentPadding),
+        contentPadding =
+            uiComponent.layout
+                .toContentPadding()
+                .toPaddingValues(ButtonDefaults.ContentPadding),
     ) {
         Text(
             text = uiComponent.value.toText(),
@@ -134,13 +145,13 @@ internal fun ButtonComponent(
 internal fun IconButtonComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
     IconButton(
         modifier = modifier.componentUI(uiComponent),
-        onClick = click(uiComponent, onClick, componentList, componentState),
+        onClick = click(uiComponent, onAction, componentList, componentState),
         colors = uiComponent.style.toIconButtonColors(),
         shape = uiComponent.style.toShape(IconButtonDefaults.standardShape),
     ) {
@@ -162,4 +173,74 @@ internal fun IconButtonComponent(
             )
         }
     }
+}
+
+@Composable
+internal fun IconComponent(
+    uiComponent: UIComponent,
+    modifier: Modifier = Modifier,
+    onAction: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
+) {
+    val icon = uiComponent.value.toIcon()
+    if (icon != null) {
+        Icon(
+            modifier =
+                modifier
+                    .componentUI(uiComponent)
+                    .componentClick(uiComponent, onAction, componentList, componentState),
+            imageVector = icon,
+            contentDescription = uiComponent.value.toText(),
+        )
+    } else {
+        Icon(
+            painter =
+                rememberAsyncImagePainter(
+                    model = uiComponent.value.toImage(),
+                    filterQuality = uiComponent.style.toQuality(),
+                    contentScale = uiComponent.style.toScale(),
+                ),
+            modifier =
+                modifier
+                    .componentUI(uiComponent)
+                    .componentClick(uiComponent, onAction, componentList, componentState),
+            contentDescription = uiComponent.value.toText(),
+        )
+    }
+}
+
+@Composable
+internal fun SwitchComponent(
+    uiComponent: UIComponent,
+    modifier: Modifier = Modifier,
+    onAction: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
+) {
+    val componentId = uiComponent.componentId
+    val componentValue = uiComponent.value?.copy()
+    Switch(
+        modifier = modifier.componentUI(uiComponent),
+        checked = componentValue.toChecked(),
+        onCheckedChange = {
+            componentValue.setChecked()
+            onAction(ComponentAction("Switch", componentId, componentValue))
+        },
+        thumbContent = {
+            uiComponent.ForEachChildComponent { child ->
+                if (child.value.toChecked()) {
+                    DispatchRenderComponent(
+                        child,
+                        Modifier,
+                        onAction,
+                        componentList,
+                        componentState,
+                    )
+                }
+            }
+        },
+        enabled = uiComponent.value.toEnabled(),
+        colors = uiComponent.style.toColors().toSwitchColors(),
+    )
 }

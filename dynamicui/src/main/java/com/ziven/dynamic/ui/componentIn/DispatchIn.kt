@@ -13,7 +13,7 @@ import com.ziven.dynamic.ui.internal.logPrint
 internal fun DispatchRenderComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -22,12 +22,12 @@ internal fun DispatchRenderComponent(
     uiComponent.componentId?.let {
         componentState?.updateValue?.invoke("$it/", uiComponent, emptyMap())
     }
-    if (dispatchScaffoldComponent(uiComponent, modifier, onClick, componentList, componentState)) return
-    if (dispatchListComponent(uiComponent, modifier, onClick, componentList, componentState)) return
-    if (dispatchContainerComponent(uiComponent, modifier, onClick, componentList, componentState)) return
-    if (dispatchElementComponent(uiComponent, modifier, onClick, componentList, componentState)) return
+    if (dispatchScaffoldComponent(uiComponent, modifier, onAction, componentList, componentState)) return
+    if (dispatchListComponent(uiComponent, modifier, onAction, componentList, componentState)) return
+    if (dispatchContainerComponent(uiComponent, modifier, onAction, componentList, componentState)) return
+    if (dispatchElementComponent(uiComponent, modifier, onAction, componentList, componentState)) return
     UIManager.getComponent(uiComponent.componentType)?.let {
-        DispatchRenderComponent(it, modifier, onClick, componentList, componentState)
+        DispatchRenderComponent(it, modifier, onAction, componentList, componentState)
     }
 }
 
@@ -35,32 +35,32 @@ internal fun DispatchRenderComponent(
 private fun dispatchScaffoldComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) = when (uiComponent.componentName) {
     "Scaffold" -> {
-        ScaffoldComponent(uiComponent, modifier, onClick, componentList, componentState)
+        ScaffoldComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "TopBar" -> {
-        TopBarComponent(uiComponent, modifier, onClick, componentList, componentState)
+        TopBarComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "BottomBar" -> {
-        BottomBarComponent(uiComponent, modifier, onClick, componentList, componentState)
+        BottomBarComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "SnackBar" -> {
-        SnackBarComponent(uiComponent, modifier, onClick, componentList, componentState)
+        SnackBarComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "FloatingActionButton" -> {
-        FloatingActionButtonComponent(uiComponent, modifier, onClick, componentList, componentState)
+        FloatingActionButtonComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
@@ -71,17 +71,17 @@ private fun dispatchScaffoldComponent(
 private fun dispatchListComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) = when (uiComponent.componentName) {
     "LazyColumn" -> {
-        LazyColumnComponent(uiComponent, modifier, onClick, componentList, componentState)
+        LazyColumnComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "LazyRow" -> {
-        LazyRowComponent(uiComponent, modifier, onClick, componentList, componentState)
+        LazyRowComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
@@ -92,22 +92,22 @@ private fun dispatchListComponent(
 private fun dispatchContainerComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) = when (uiComponent.componentName) {
     "Column" -> {
-        ColumnComponent(uiComponent, modifier, onClick, componentList, componentState)
+        ColumnComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "Row" -> {
-        RowComponent(uiComponent, modifier, onClick, componentList, componentState)
+        RowComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "Box" -> {
-        BoxComponent(uiComponent, modifier, onClick, componentList, componentState)
+        BoxComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
@@ -118,7 +118,7 @@ private fun dispatchContainerComponent(
 private fun dispatchElementComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) = when (uiComponent.componentName) {
@@ -128,22 +128,32 @@ private fun dispatchElementComponent(
     }
 
     "Text" -> {
-        TextComponent(uiComponent, modifier, onClick, componentList, componentState)
+        TextComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "Image" -> {
-        ImageComponent(uiComponent, modifier, onClick, componentList, componentState)
+        ImageComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "Button" -> {
-        ButtonComponent(uiComponent, modifier, onClick, componentList, componentState)
+        ButtonComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
     "IconButton" -> {
-        IconButtonComponent(uiComponent, modifier, onClick, componentList, componentState)
+        IconButtonComponent(uiComponent, modifier, onAction, componentList, componentState)
+        true
+    }
+
+    "Icon" -> {
+        IconComponent(uiComponent, modifier, onAction, componentList, componentState)
+        true
+    }
+
+    "Switch" -> {
+        SwitchComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 

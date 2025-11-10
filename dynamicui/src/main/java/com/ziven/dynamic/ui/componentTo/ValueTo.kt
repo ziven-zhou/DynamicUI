@@ -20,6 +20,14 @@ internal fun ComponentValue?.toImage() = this?.image
 
 internal fun ComponentValue?.toClickable() = this?.clickable ?: false
 
+internal fun ComponentValue?.toChecked() = this?.checked ?: false
+
+internal fun ComponentValue?.setChecked() = this?.checked = !this.toChecked()
+
+internal fun ComponentValue?.toEnabled() = this?.enabled ?: true
+
+internal fun ComponentValue?.setEnabled() = this?.enabled = !this.toEnabled()
+
 internal fun ComponentValue?.toExtras(): MutableMap<String, String> = this?.extras?.toMutableMap() ?: mutableMapOf()
 
 internal fun ComponentValue?.toKeys(): MutableList<String> = this.toExtras().keys.toMutableList()

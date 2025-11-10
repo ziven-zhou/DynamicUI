@@ -19,16 +19,16 @@ import java.net.URLEncoder
 
 internal fun click(
     uiComponent: UIComponent,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ): () -> Unit {
     val componentId = uiComponent.componentId
     val componentValue = uiComponent.value?.copy()
-    val componentAction = ComponentAction(componentId, componentValue)
+    val componentAction = ComponentAction("Click", componentId, componentValue)
     return {
         if (dispatchClick(componentAction, componentState)) {
-            onClick(componentAction)
+            onAction(componentAction)
         }
     }
 }

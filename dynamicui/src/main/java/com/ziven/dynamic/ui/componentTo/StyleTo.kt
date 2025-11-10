@@ -8,6 +8,8 @@ import androidx.compose.material3.FabPosition
 import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -48,6 +50,43 @@ internal fun ComponentStyle?.toForegroundColor(defColor: Color): Color = this?.f
 @Composable
 internal fun ComponentStyle?.toContentColor(defColor: Color): Color =
     this.toForegroundColor(contentColorFor(this.toContainerColor(defColor)))
+
+internal fun ComponentStyle?.toColors(): Map<String, Color>? {
+    val colors = this?.colors ?: return null
+    val result = mutableMapOf<String, Color>()
+    colors.forEach { (key, value) ->
+        val color = value.toColor()
+        if (color != null) {
+            result[key] = color
+        }
+    }
+    return result.ifEmpty { null }
+}
+
+@Composable
+internal fun Map<String, Color>?.toSwitchColors(): SwitchColors =
+    this?.let { map ->
+        SwitchDefaults.colors().let { def ->
+            def.copy(
+                checkedThumbColor = map["checkedThumbColor"] ?: def.checkedThumbColor,
+                checkedTrackColor = map["checkedTrackColor"] ?: def.checkedTrackColor,
+                checkedBorderColor = map["checkedBorderColor"] ?: def.checkedBorderColor,
+                checkedIconColor = map["checkedIconColor"] ?: def.checkedIconColor,
+                uncheckedThumbColor = map["uncheckedThumbColor"] ?: def.uncheckedThumbColor,
+                uncheckedTrackColor = map["uncheckedTrackColor"] ?: def.uncheckedTrackColor,
+                uncheckedBorderColor = map["uncheckedBorderColor"] ?: def.uncheckedBorderColor,
+                uncheckedIconColor = map["uncheckedIconColor"] ?: def.uncheckedIconColor,
+                disabledCheckedThumbColor = map["disabledCheckedThumbColor"] ?: def.disabledCheckedThumbColor,
+                disabledUncheckedThumbColor = map["disabledUncheckedThumbColor"] ?: def.disabledUncheckedThumbColor,
+                disabledCheckedTrackColor = map["disabledCheckedTrackColor"] ?: def.disabledCheckedTrackColor,
+                disabledUncheckedTrackColor = map["disabledUncheckedTrackColor"] ?: def.disabledUncheckedTrackColor,
+                disabledCheckedBorderColor = map["disabledCheckedBorderColor"] ?: def.disabledCheckedBorderColor,
+                disabledUncheckedBorderColor = map["disabledUncheckedBorderColor"] ?: def.disabledUncheckedBorderColor,
+                disabledCheckedIconColor = map["disabledCheckedIconColor"] ?: def.disabledCheckedIconColor,
+                disabledUncheckedIconColor = map["disabledUncheckedIconColor"] ?: def.disabledUncheckedIconColor,
+            )
+        }
+    } ?: SwitchDefaults.colors()
 
 @Composable
 internal fun ComponentStyle?.toShape(defSharp: Shape): Shape =

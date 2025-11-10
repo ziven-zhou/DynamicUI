@@ -48,7 +48,7 @@ import com.ziven.dynamic.ui.internal.logPrint
 internal fun ScaffoldComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -56,22 +56,22 @@ internal fun ScaffoldComponent(
         modifier = modifier.componentLayout(uiComponent.layout),
         topBar = {
             uiComponent.findChildComponentWithName("TopBar")?.let {
-                DispatchRenderComponent(it, Modifier, onClick, componentList, componentState)
+                DispatchRenderComponent(it, Modifier, onAction, componentList, componentState)
             }
         },
         bottomBar = {
             uiComponent.findChildComponentWithName("BottomBar")?.let {
-                DispatchRenderComponent(it, Modifier, onClick, componentList, componentState)
+                DispatchRenderComponent(it, Modifier, onAction, componentList, componentState)
             }
         },
         snackbarHost = {
             uiComponent.findChildComponentWithName("SnackBar")?.let {
-                DispatchRenderComponent(it, Modifier, onClick, componentList, componentState)
+                DispatchRenderComponent(it, Modifier, onAction, componentList, componentState)
             }
         },
         floatingActionButton = {
             uiComponent.findChildComponentWithName("FloatingActionButton")?.let {
-                DispatchRenderComponent(it, Modifier, onClick, componentList, componentState)
+                DispatchRenderComponent(it, Modifier, onAction, componentList, componentState)
             }
         },
         floatingActionButtonPosition = uiComponent.run { style.toFabPosition() },
@@ -95,7 +95,7 @@ internal fun ScaffoldComponent(
                         DispatchRenderComponent(
                             child,
                             Modifier,
-                            onClick,
+                            onAction,
                             componentList,
                             componentState,
                         )
@@ -110,7 +110,7 @@ internal fun ScaffoldComponent(
 internal fun TopBarComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -131,7 +131,7 @@ internal fun TopBarComponent(
         },
         navigationIcon = {
             uiComponent.ForEachChildComponent {
-                DispatchRenderComponent(it, Modifier, onClick, componentList, componentState)
+                DispatchRenderComponent(it, Modifier, onAction, componentList, componentState)
             }
         },
     )
@@ -141,7 +141,7 @@ internal fun TopBarComponent(
 internal fun BottomBarComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -160,7 +160,7 @@ internal fun BottomBarComponent(
                 DispatchRenderComponent(
                     it,
                     Modifier.align(Alignment.CenterVertically),
-                    onClick,
+                    onAction,
                     componentList,
                     componentState,
                 )
@@ -173,7 +173,7 @@ internal fun BottomBarComponent(
 internal fun SnackBarComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -189,12 +189,12 @@ internal fun SnackBarComponent(
 internal fun FloatingActionButtonComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
     FloatingActionButton(
-        onClick = click(uiComponent, onClick, componentList, componentState),
+        onClick = click(uiComponent, onAction, componentList, componentState),
         modifier = modifier.componentLayout(uiComponent.layout),
         shape = uiComponent.style.toShape(FloatingActionButtonDefaults.shape),
         containerColor = uiComponent.style.toContainerColor(FloatingActionButtonDefaults.containerColor),
@@ -204,7 +204,7 @@ internal fun FloatingActionButtonComponent(
             DispatchRenderComponent(
                 it,
                 Modifier,
-                onClick,
+                onAction,
                 componentList,
                 componentState,
             )

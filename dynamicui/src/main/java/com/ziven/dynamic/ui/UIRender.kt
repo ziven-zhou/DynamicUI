@@ -8,9 +8,9 @@ fun RenderComponent(
     componentType: String?,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
-    onClick: (ComponentAction) -> Unit = {},
+    onAction: (ComponentAction) -> Unit = {},
 ) = UIManager.RunComponent(componentType) {
-    RouteComponent(it, componentList, componentState, onClick)
+    RouteComponent(it, componentList, componentState, onAction)
 }
 
 @Composable
@@ -18,7 +18,7 @@ fun RenderComponent(
     uiComponent: UIComponent,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
-    onClick: (ComponentAction) -> Unit = {},
+    onAction: (ComponentAction) -> Unit = {},
 ) = UIManager.AddComponent(uiComponent) {
-    RouteComponent(it, componentList, componentState, onClick)
+    RouteComponent(it, componentList, componentState, onAction)
 }

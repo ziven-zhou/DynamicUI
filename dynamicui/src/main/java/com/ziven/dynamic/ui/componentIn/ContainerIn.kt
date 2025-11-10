@@ -22,7 +22,7 @@ import com.ziven.dynamic.ui.componentTo.toVerticalAlign2
 internal fun ColumnComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -30,7 +30,7 @@ internal fun ColumnComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         verticalArrangement = uiComponent.style.toVerticalAlign2(),
         horizontalAlignment = uiComponent.style.toHorizontalAlign(),
     ) {
@@ -38,7 +38,7 @@ internal fun ColumnComponent(
             DispatchRenderComponent(
                 child,
                 Modifier.align(child.style.toHorizontalAlign()),
-                onClick,
+                onAction,
                 componentList,
                 componentState,
             )
@@ -50,7 +50,7 @@ internal fun ColumnComponent(
 internal fun RowComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -58,7 +58,7 @@ internal fun RowComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         horizontalArrangement = uiComponent.style.toHorizontalAlign2(),
         verticalAlignment = uiComponent.style.toVerticalAlign(),
     ) {
@@ -66,7 +66,7 @@ internal fun RowComponent(
             DispatchRenderComponent(
                 child,
                 Modifier.align(child.style.toVerticalAlign()),
-                onClick,
+                onAction,
                 componentList,
                 componentState,
             )
@@ -78,7 +78,7 @@ internal fun RowComponent(
 internal fun BoxComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -86,14 +86,14 @@ internal fun BoxComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         contentAlignment = uiComponent.style.toAlign(),
     ) {
         uiComponent.ForEachChildComponent { child ->
             DispatchRenderComponent(
                 child,
                 Modifier.align(child.style.toAlign()),
-                onClick,
+                onAction,
                 componentList,
                 componentState,
             )

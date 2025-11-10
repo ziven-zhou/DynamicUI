@@ -37,7 +37,7 @@ private fun makeWhich(
 internal fun LazyColumnComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -45,7 +45,7 @@ internal fun LazyColumnComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(),
         reverseLayout = uiComponent.layout.toReverseLayout(),
         horizontalAlignment = uiComponent.style.toHorizontalAlign(),
@@ -66,7 +66,7 @@ internal fun LazyColumnComponent(
                     },
                 contentType = { index -> it.componentType(which, index) },
             ) { index ->
-                ItemsComponent(which, index, onClick, componentList, componentState)
+                ItemsComponent(which, index, onAction, componentList, componentState)
             }
         }
     }
@@ -76,7 +76,7 @@ internal fun LazyColumnComponent(
 internal fun LazyRowComponent(
     uiComponent: UIComponent,
     modifier: Modifier = Modifier,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
 ) {
@@ -84,7 +84,7 @@ internal fun LazyRowComponent(
         modifier =
             modifier
                 .componentUI(uiComponent)
-                .componentClick(uiComponent, onClick, componentList, componentState),
+                .componentClick(uiComponent, onAction, componentList, componentState),
         contentPadding = uiComponent.layout.toContentPadding().toPaddingValues(),
         reverseLayout = uiComponent.layout.toReverseLayout(),
         verticalAlignment = uiComponent.style.toVerticalAlign(),
@@ -105,7 +105,7 @@ internal fun LazyRowComponent(
                     },
                 contentType = { index -> it.componentType(which, index) },
             ) { index ->
-                ItemsComponent(which, index, onClick, componentList, componentState)
+                ItemsComponent(which, index, onAction, componentList, componentState)
             }
         }
     }
@@ -115,7 +115,7 @@ internal fun LazyRowComponent(
 private fun ItemsComponent(
     which: String,
     index: Int,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
     componentList: ComponentList,
     componentState: ComponentState? = null,
 ) {
@@ -128,5 +128,5 @@ private fun ItemsComponent(
             }
         }
     }
-    DispatchRenderComponent(parent, Modifier, onClick, componentList, componentState)
+    DispatchRenderComponent(parent, Modifier, onAction, componentList, componentState)
 }

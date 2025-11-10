@@ -42,12 +42,12 @@ internal fun RouteComponent(
     uiComponent: UIComponent,
     componentList: ComponentList? = null,
     componentState: ComponentState? = null,
-    onClick: (ComponentAction) -> Unit,
+    onAction: (ComponentAction) -> Unit,
 ) {
     val navHostController = componentState?.navHostController
     val componentRoutes = uiComponent.toComponentRoute()
     if (navHostController == null || componentRoutes.isEmpty()) {
-        DispatchRenderComponent(uiComponent, Modifier, onClick, componentList, componentState)
+        DispatchRenderComponent(uiComponent, Modifier, onAction, componentList, componentState)
         return
     }
     val navGroup =
@@ -76,7 +76,7 @@ internal fun RouteComponent(
                     DispatchRenderComponent(
                         route.component,
                         Modifier,
-                        onClick,
+                        onAction,
                         componentList,
                         componentState,
                     )
