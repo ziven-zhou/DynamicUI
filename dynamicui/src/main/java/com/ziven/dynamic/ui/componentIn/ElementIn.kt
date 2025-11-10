@@ -7,7 +7,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,17 +14,12 @@ import coil.compose.rememberAsyncImagePainter
 import com.ziven.dynamic.ui.ComponentAction
 import com.ziven.dynamic.ui.ComponentList
 import com.ziven.dynamic.ui.ComponentState
-import com.ziven.dynamic.ui.ForEachChildComponent
 import com.ziven.dynamic.ui.UIComponent
 import com.ziven.dynamic.ui.componentTo.componentClick
 import com.ziven.dynamic.ui.componentTo.componentUI
-import com.ziven.dynamic.ui.componentTo.setChecked
 import com.ziven.dynamic.ui.componentTo.toAlign
 import com.ziven.dynamic.ui.componentTo.toButtonColors
-import com.ziven.dynamic.ui.componentTo.toChecked
-import com.ziven.dynamic.ui.componentTo.toColors
 import com.ziven.dynamic.ui.componentTo.toContentPadding
-import com.ziven.dynamic.ui.componentTo.toEnabled
 import com.ziven.dynamic.ui.componentTo.toFontColor
 import com.ziven.dynamic.ui.componentTo.toFontFamily
 import com.ziven.dynamic.ui.componentTo.toFontSize
@@ -41,9 +35,7 @@ import com.ziven.dynamic.ui.componentTo.toPaddingValues
 import com.ziven.dynamic.ui.componentTo.toQuality
 import com.ziven.dynamic.ui.componentTo.toScale
 import com.ziven.dynamic.ui.componentTo.toShape
-import com.ziven.dynamic.ui.componentTo.toSwitchColors
 import com.ziven.dynamic.ui.componentTo.toText
-import com.ziven.dynamic.ui.forEachChildComponent
 import com.ziven.dynamic.ui.internal.logPrint
 
 @Composable
@@ -208,39 +200,4 @@ internal fun IconComponent(
             contentDescription = uiComponent.value.toText(),
         )
     }
-}
-
-@Composable
-internal fun SwitchComponent(
-    uiComponent: UIComponent,
-    modifier: Modifier = Modifier,
-    onAction: (ComponentAction) -> Unit,
-    componentList: ComponentList? = null,
-    componentState: ComponentState? = null,
-) {
-    val componentId = uiComponent.componentId
-    val componentValue = uiComponent.value?.copy()
-    Switch(
-        modifier = modifier.componentUI(uiComponent),
-        checked = componentValue.toChecked(),
-        onCheckedChange = {
-            componentValue.setChecked()
-            onAction(ComponentAction("Switch", componentId, componentValue))
-        },
-        thumbContent = {
-            uiComponent.ForEachChildComponent { child ->
-                if (componentValue.toChecked()) {
-                    DispatchRenderComponent(
-                        child,
-                        Modifier,
-                        onAction,
-                        componentList,
-                        componentState,
-                    )
-                }
-            }
-        },
-        enabled = uiComponent.value.toEnabled(),
-        colors = uiComponent.style.toColors().toSwitchColors(),
-    )
 }

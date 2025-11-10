@@ -22,10 +22,46 @@ internal fun DispatchRenderComponent(
     uiComponent.componentId?.let {
         componentState?.updateValue?.invoke("$it/", uiComponent, emptyMap())
     }
-    if (dispatchScaffoldComponent(uiComponent, modifier, onAction, componentList, componentState)) return
-    if (dispatchListComponent(uiComponent, modifier, onAction, componentList, componentState)) return
-    if (dispatchContainerComponent(uiComponent, modifier, onAction, componentList, componentState)) return
-    if (dispatchElementComponent(uiComponent, modifier, onAction, componentList, componentState)) return
+    if (dispatchScaffoldComponent(
+            uiComponent,
+            modifier,
+            onAction,
+            componentList,
+            componentState,
+        )
+    ) {
+        return
+    }
+    if (dispatchListComponent(
+            uiComponent,
+            modifier,
+            onAction,
+            componentList,
+            componentState,
+        )
+    ) {
+        return
+    }
+    if (dispatchContainerComponent(
+            uiComponent,
+            modifier,
+            onAction,
+            componentList,
+            componentState,
+        )
+    ) {
+        return
+    }
+    if (dispatchElementComponent(
+            uiComponent,
+            modifier,
+            onAction,
+            componentList,
+            componentState,
+        )
+    ) {
+        return
+    }
     UIManager.getComponent(uiComponent.componentType)?.let {
         DispatchRenderComponent(it, modifier, onAction, componentList, componentState)
     }
@@ -60,7 +96,13 @@ private fun dispatchScaffoldComponent(
     }
 
     "FloatingActionButton" -> {
-        FloatingActionButtonComponent(uiComponent, modifier, onAction, componentList, componentState)
+        FloatingActionButtonComponent(
+            uiComponent,
+            modifier,
+            onAction,
+            componentList,
+            componentState,
+        )
         true
     }
 
@@ -152,8 +194,29 @@ private fun dispatchElementComponent(
         true
     }
 
+    else -> false
+}
+
+@Composable
+private fun dispatchSelectionComponent(
+    uiComponent: UIComponent,
+    modifier: Modifier = Modifier,
+    onAction: (ComponentAction) -> Unit,
+    componentList: ComponentList? = null,
+    componentState: ComponentState? = null,
+) = when (uiComponent.componentName) {
     "Switch" -> {
         SwitchComponent(uiComponent, modifier, onAction, componentList, componentState)
+        true
+    }
+
+    "RadioButton" -> {
+        RadioButtonComponent(uiComponent, modifier, onAction, componentList, componentState)
+        true
+    }
+
+    "CheckBox" -> {
+        CheckBoxComponent(uiComponent, modifier, onAction, componentList, componentState)
         true
     }
 
